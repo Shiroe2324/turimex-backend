@@ -36,15 +36,9 @@ async function ratingProductController(req: Request, res: Response) {
       };
     }
 
-    const existingRatingIndex = product.rating.users.findIndex(
-      (userRating) => {
-        console.log("user rating id", userRating._id);
-        console.log("user id", user._id);
-        return userRating._id.toString() === user._id.toString()
-      },
-    );
-
-    console.log(existingRatingIndex);
+    const existingRatingIndex = product.rating.users.findIndex((userRating) => {
+      return userRating._id.toString() === user._id.toString();
+    });
 
     if (existingRatingIndex !== -1) {
       product.rating.total--;
@@ -53,14 +47,13 @@ async function ratingProductController(req: Request, res: Response) {
 
     const comment = req.body.comment || null;
     product.rating.users.push({ _id: user._id, rating, comment });
-    
+
     const newTotal = ++product.rating.total;
     const totalRatingSum = product.rating.users.reduce(
       (accumulator, currentValue) => accumulator + currentValue.rating,
       0,
     );
 
-    console.log(totalRatingSum);
     const newAverage = totalRatingSum / newTotal;
 
     product.rating.total = newTotal;

@@ -4,7 +4,6 @@ import connectDatabases from './managers/connection.manager';
 import logger from './managers/logger.manager';
 import config from './utils/config';
 
-const port = process.env.PORT || 3000;
 const requiredEnvVariables = [
   'MONGODB_URI',
   'JWT_SECRET',
@@ -22,10 +21,10 @@ for (const variable of requiredEnvVariables) {
 
 connectDatabases();
 
-app.listen(port, () => {
+app.listen(config.port, () => {
   const envMessage =
     config.nodeEnv !== 'development'
-      ? `Server listening on port ${port}`
-      : `Server listening at http://localhost:${port}`;
+      ? `Server listening on port ${config.port}`
+      : `Server listening at http://localhost:${config.port}`;
   logger.info(envMessage);
 });

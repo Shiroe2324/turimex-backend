@@ -9,19 +9,8 @@
     "esModuleInterop": true,
     "outDir": "./build",
     "rootDir": "./src",
-    "types": [
-      "node",
-      "express",
-      "./src/@types/express.d.ts"
-    ]
+    "types": ["./src/@types/express.d.ts"]
   },
-  "exclude": [
-    "node_modules",
-    ".idx",
-    "build",
-    "logs"
-  ],
-  "include": [
-    "src/**/*.ts"
-  ]
+  "exclude": ["node_modules", ".idx", "build", "logs"],
+  "include": ["src/**/*.ts"]
 }
