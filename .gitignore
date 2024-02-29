@@ -1,0 +1,7 @@
+.idx
+build
+logs
+node_modules
+.env
+package-lock.json
+tests

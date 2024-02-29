@@ -1,0 +1,27 @@
+{
+  "compilerOptions": {
+    "removeComments": true,
+    "sourceMap": false,
+    "noEmitHelpers": false,
+    "target": "ES6",
+    "module": "commonjs",
+    "strict": true,
+    "esModuleInterop": true,
+    "outDir": "./build",
+    "rootDir": "./src",
+    "types": [
+      "node",
+      "express",
+      "./src/@types/express.d.ts"
+    ]
+  },
+  "exclude": [
+    "node_modules",
+    ".idx",
+    "build",
+    "logs"
+  ],
+  "include": [
+    "src/**/*.ts"
+  ]
+}
