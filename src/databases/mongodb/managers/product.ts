@@ -8,8 +8,8 @@ interface ProductFilters {
   creator?: string;
 }
 
-async function getProducts() {
-  const products = await ProductModel.find({}).select('-password').lean();
+async function getProducts(options = {}) {
+  const products = await ProductModel.find(options).select('-password').lean();
   return products;
 }
 

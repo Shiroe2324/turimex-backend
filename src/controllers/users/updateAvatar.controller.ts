@@ -4,7 +4,7 @@ import manageImages from '../../managers/image.manager';
 import logger from '../../managers/logger.manager';
 import manageUsers from '../../managers/user.manager';
 
-const { cleanUser, getUserById } = manageUsers();
+const { cleanUser, getUserById, updateUserById } = manageUsers();
 const { uploadImage, deleteImage } = manageImages();
 
 async function updateAvatarController(req: Request, res: Response) {
@@ -13,7 +13,9 @@ async function updateAvatarController(req: Request, res: Response) {
       return res.status(401).json({ message: 'Unauthorized - No token provided' });
     }
 
-    const user = await getUserById(req.params.id);
+    const { userId } = req.params;
+
+    const user = await getUserById(userId);
 
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
@@ -40,14 +42,19 @@ async function updateAvatarController(req: Request, res: Response) {
     const result = await uploadImage(avatar.tempFilePath, 'avatars');
     await fs.unlink(avatar.tempFilePath);
 
-    user.avatar = {
+    const newAvatar = {
       url: result.secure_url,
       public_id: result.public_id,
     };
 
-    await user.save();
+    const userToUpdate = { avatar: newAvatar };
+    const updatedUser = await updateUserById(userId, userToUpdate);
 
-    res.json({ message: 'Avatar updated successfully', user: await cleanUser(user) });
+    if (!updatedUser) {
+      return res.status(500).json({ message: 'Avatar could not be updated' });
+    }
+
+    res.json({ message: 'Avatar updated successfully', user: await cleanUser(updatedUser) });
   } catch (error: any) {
     logger.error(error.message);
     res.status(500).json({ message: 'Server Error' });

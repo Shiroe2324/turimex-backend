@@ -18,17 +18,17 @@ async function ratingProductController(req: Request, res: Response) {
       return res.status(404).json({ message: 'Product not found' });
     }
 
-    if (product.creator === user._id) {
-      return res.status(400).json({ message: 'You cannot rate your own product' });
+    if (product.creatorId === user.userId) {
+      return res.status(403).json({ message: 'You cannot rate your own product' });
     }
 
     const rating = parseInt(req.body.rating);
 
     if (isNaN(rating)) {
-      return res.status(405).json({ message: 'Rating must be a number' });
+      return res.status(400).json({ message: 'Rating must be a number' });
     }
 
-    if (product.rating === null) {
+    if (!product.rating) {
       product.rating = {
         total: 0,
         average: 0,
@@ -37,7 +37,7 @@ async function ratingProductController(req: Request, res: Response) {
     }
 
     const existingRatingIndex = product.rating.users.findIndex((userRating) => {
-      return userRating._id.toString() === user._id.toString();
+      return userRating.userId === user.userId;
     });
 
     if (existingRatingIndex !== -1) {
@@ -46,7 +46,7 @@ async function ratingProductController(req: Request, res: Response) {
     }
 
     const comment = req.body.comment || null;
-    product.rating.users.push({ _id: user._id, rating, comment });
+    product.rating.users.push({ userId: user.userId, rating, comment });
 
     const newTotal = ++product.rating.total;
     const totalRatingSum = product.rating.users.reduce(

@@ -1,4 +1,4 @@
-import { Document, Schema } from 'mongoose';
+import { Document } from 'mongoose';
 
 interface Image {
   public_id: string;
@@ -6,9 +6,9 @@ interface Image {
 }
 
 interface RatingUser {
-  _id: Schema.Types.ObjectId;
   comment: string;
   rating: number;
+  userId: string;
 }
 
 interface Rating {
@@ -21,15 +21,13 @@ interface Product extends Document {
   brand: string;
   category: string;
   countInStock: number;
-  createdAt: string;
-  creator: Schema.Types.ObjectId;
+  creatorId: string;
   description: string;
   images: Image[];
   name: string;
   price: number;
   rating: Rating | null;
   slug: string;
-  updatedAt: string;
 }
 
 export default Product;

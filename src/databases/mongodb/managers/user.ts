@@ -26,8 +26,8 @@ async function getPagenizedUsers(req: Request) {
   return users;
 }
 
-async function getUserById(id: string) {
-  const user = await UserModel.findById(id);
+async function getUserById(userId: string) {
+  const user = await UserModel.findOne({ userId });
   return user;
 }
 
@@ -41,8 +41,8 @@ async function cleanUser(user: User): Promise<Partial<User>> {
   return cleanedUser;
 }
 
-async function getUserWithoutPassword(id: string) {
-  const user = await UserModel.findById(id).select('-password');
+async function getUserWithoutPassword(userId: string) {
+  const user = await UserModel.findOne({ userId }).select('-password');
   return user;
 }
 
@@ -57,13 +57,13 @@ async function updateUserByEmail(email: string, user: Partial<User>) {
   return updatedUser;
 }
 
-async function updateUserById(id: string, user: Partial<User>) {
-  const updatedUser = await UserModel.findByIdAndUpdate(id, user, { new: true });
+async function updateUserById(userId: string, user: Partial<User>) {
+  const updatedUser = await UserModel.findOneAndUpdate({ userId }, user, { new: true });
   return updatedUser;
 }
 
-async function deleteUser(id: string) {
-  const deletedUser = await UserModel.findByIdAndDelete(id);
+async function deleteUser(userId: string) {
+  const deletedUser = await UserModel.findOneAndDelete({ userId });
   return deletedUser;
 }
 

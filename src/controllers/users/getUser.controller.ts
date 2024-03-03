@@ -6,7 +6,8 @@ const { getUserWithoutPassword } = manageUsers();
 
 async function getUserController(req: Request, res: Response) {
   try {
-    const user = await getUserWithoutPassword(req.params.id);
+    const { userId } = req.params;
+    const user = await getUserWithoutPassword(userId);
 
     if (!user) {
       return res.status(404).json({ message: 'User not found' });

@@ -23,7 +23,7 @@ async function loginController(req: Request, res: Response) {
       return res.status(401).json({ message: 'Authentication failed - Invalid credentials' });
     }
 
-    const token = jwt.sign({ user: user._id.toString() }, config.jwtSecret, {
+    const token = jwt.sign({ user: user.userId }, config.jwtSecret, {
       expiresIn: '24h',
     });
 

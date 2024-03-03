@@ -1,5 +1,7 @@
 import mongoose from 'mongoose';
+import logger from '../../../managers/logger.manager';
 import User from '../interfaces/user.interface';
+import Counter from './counter.model';
 
 const userSchema = new mongoose.Schema<User>(
   {
@@ -30,12 +32,32 @@ const userSchema = new mongoose.Schema<User>(
       required: true,
       trim: true,
     },
+    userId: {
+      type: String,
+      unique: true,
+    },
   },
   {
     timestamps: true,
     versionKey: false,
   },
 );
+
+userSchema.pre('save', async function () {
+  if (this.isNew) {
+    try {
+      const counter = await Counter.findOneAndUpdate(
+        { _id: 'userId' },
+        { $inc: { seq: 1 } },
+        { new: true, upsert: true },
+      );
+
+      this.userId = counter.seq.toString();
+    } catch (error) {
+      logger.error(error);
+    }
+  }
+});
 
 const model = mongoose.model<User>('User', userSchema);
 

@@ -2,23 +2,10 @@ import 'dotenv/config';
 import app from './app';
 import connectDatabases from './managers/connection.manager';
 import logger from './managers/logger.manager';
+import checkEnvVariables from './utils/checkEnvVariables';
 import config from './utils/config';
 
-const requiredEnvVariables = [
-  'MONGODB_URI',
-  'JWT_SECRET',
-  'CLOUDINARY_CLOUD_NAME',
-  'CLOUDINARY_API_KEY',
-  'CLOUDINARY_API_SECRET',
-];
-
-for (const variable of requiredEnvVariables) {
-  if (!process.env[variable]) {
-    logger.error(`Missing environment variable: ${variable}`);
-    process.exit(1);
-  }
-}
-
+checkEnvVariables();
 connectDatabases();
 
 app.listen(config.port, () => {

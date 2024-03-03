@@ -1,12 +1,15 @@
 import { Request, Response } from 'express';
+import manageImages from '../../managers/image.manager';
 import logger from '../../managers/logger.manager';
 import manageUsers from '../../managers/user.manager';
 
+const { deleteImage } = manageImages();
 const { getUserById, deleteUser, cleanUser } = manageUsers();
 
 async function deleteUserController(req: Request, res: Response) {
   try {
-    const user = await getUserById(req.params.id);
+    const { userId } = req.params;
+    const user = await getUserById(userId);
 
     if (!req.user) {
       return res.status(401).json({ message: 'Unauthorized - No token provided' });
@@ -20,7 +23,11 @@ async function deleteUserController(req: Request, res: Response) {
       return res.status(403).json({ message: 'You are not authorized to delete this user' });
     }
 
-    await deleteUser(req.params.id);
+    if (user.avatar) {
+      await deleteImage(user.avatar.public_id);
+    }
+
+    await deleteUser(userId);
 
     res.json({ message: 'User removed', user: await cleanUser(user) });
   } catch (error: any) {

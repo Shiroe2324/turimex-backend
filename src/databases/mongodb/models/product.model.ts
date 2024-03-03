@@ -1,5 +1,8 @@
 import { Schema, model } from 'mongoose';
+import slugify from 'slugify';
+import logger from '../../../managers/logger.manager';
 import Product from '../interfaces/product.interface';
+import Counter from './counter.model';
 
 const productSchema = new Schema<Product>(
   {
@@ -10,17 +13,16 @@ const productSchema = new Schema<Product>(
     },
     slug: {
       type: String,
-      required: true,
       unique: true,
       index: true,
     },
-    creator: {
-      type: Schema.Types.ObjectId,
-      ref: 'User',
+    creatorId: {
+      type: String,
       required: true,
     },
     category: {
       type: String,
+      trim: true,
       required: true,
     },
     images: [
@@ -37,6 +39,7 @@ const productSchema = new Schema<Product>(
     },
     brand: {
       type: String,
+      trim: true,
       required: true,
     },
     rating: {
@@ -45,8 +48,9 @@ const productSchema = new Schema<Product>(
         average: Number,
         users: [
           {
-            rating: Number,
             comment: String,
+            rating: Number,
+            userId: String,
           },
         ],
       },
@@ -60,8 +64,8 @@ const productSchema = new Schema<Product>(
     },
     description: {
       type: String,
-      required: true,
       trim: true,
+      required: true,
     },
   },
   {
@@ -71,6 +75,23 @@ const productSchema = new Schema<Product>(
 );
 
 productSchema.index({ slug: 1 }, { unique: true });
+
+productSchema.pre('save', async function () {
+  if (this.isNew || this.isModified('name')) {
+    try {
+      const counter = await Counter.findOneAndUpdate(
+        { _id: 'productId' },
+        { $inc: { seq: 1 } },
+        { new: true, upsert: true },
+      );
+
+      const slugifiedName = slugify(this.name, { lower: true });
+      this.slug = `${slugifiedName}-${counter.seq}`;
+    } catch (error) {
+      logger.error(error);
+    }
+  }
+});
 
 productSchema.path('images').validate((images: { url: string; public_id: string }[]) => {
   if (!images || images.length === 0) {

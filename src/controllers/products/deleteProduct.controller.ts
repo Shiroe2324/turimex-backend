@@ -18,18 +18,15 @@ async function deleteProductController(req: Request, res: Response) {
       return res.status(404).json({ message: 'Product not found' });
     }
 
-    if (product.creator.toString() !== req.user._id && !req.user.isAdmin) {
+    if (product.creatorId !== req.user.userId && !req.user.isAdmin) {
       return res.status(403).json({ message: 'You are not authorized to delete this product' });
     }
 
-    if (product.images && product.images.length > 0) {
-      const imageDeletePromises = product.images.map(async (image) => {
-        await deleteImage(image.public_id);
-      });
+    const imageDeletePromises = product.images.map(async (image) => {
+      await deleteImage(image.public_id);
+    });
 
-      await Promise.all(imageDeletePromises);
-    }
-
+    await Promise.all(imageDeletePromises);
     await deleteProductBySlug(req.params.slug);
 
     res.json({ message: 'Product removed', product });

@@ -11,6 +11,7 @@ interface User extends Document {
   isAdmin: boolean;
   password: string;
   username: string;
+  userId: string;
 }
 
 export default User;

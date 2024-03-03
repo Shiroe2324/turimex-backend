@@ -37,27 +37,22 @@ async function createProductController(req: Request, res: Response) {
     }
 
     const productData: Partial<Models.Product> = {
-      name: req.body.name,
-      slug: req.body.slug,
-      creator: req.user._id,
-      category: req.body.category,
-      images: imageUrls,
-      price: req.body.price,
       brand: req.body.brand,
+      category: req.body.category,
       countInStock: req.body.countInStock,
+      creatorId: req.user.userId,
       description: req.body.description,
+      images: imageUrls,
+      name: req.body.name,
+      price: req.body.price,
     };
 
     const product = await createProduct(productData);
 
     res.status(201).json({ message: 'Product created', product });
   } catch (error: any) {
-    if (error.code === 11000 && error.keyPattern && error.keyPattern.slug) {
-      res.status(400).json({ message: 'Slug already exists' });
-    } else {
-      logger.error(error.message);
-      res.status(500).json({ message: 'Server Error' });
-    }
+    logger.error(error.message);
+    res.status(500).json({ message: 'Server Error' });
   }
 }
 

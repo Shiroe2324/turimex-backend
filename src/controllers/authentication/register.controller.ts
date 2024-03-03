@@ -25,7 +25,7 @@ async function registerController(req: Request, res: Response) {
       password: hashedPassword,
     });
 
-    const token = jwt.sign({ user: newUser._id.toString() }, config.jwtSecret, {
+    const token = jwt.sign({ user: newUser.userId }, config.jwtSecret, {
       expiresIn: '24h',
     });
 
