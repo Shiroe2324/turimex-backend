@@ -4,6 +4,11 @@ import manageImages from '../../managers/image.manager';
 import logger from '../../managers/logger.manager';
 import manageProducts from '../../managers/product.manager';
 
+interface Image {
+  url: string;
+  public_id: string;
+}
+
 const { deleteImage, uploadImage } = manageImages();
 const { getProductBySlug, updateProductBySlug } = manageProducts();
 
@@ -12,7 +17,7 @@ async function updateProductController(req: Request, res: Response) {
     if (!req.user) {
       return res.status(401).json({ message: 'Unauthorized - No token provided' });
     }
-
+    
     const oldImages: String[] = req.body.oldImages || [];
 
     if (!oldImages.every((image) => typeof image === 'string')) {
@@ -29,13 +34,26 @@ async function updateProductController(req: Request, res: Response) {
       return res.status(403).json({ message: 'You are not authorized to update this product' });
     }
 
+    if (
+      !req.body.brand &&
+      !req.body.category &&
+      !req.body.countInStock &&
+      !req.body.description &&
+      !req.body.name &&
+      !req.body.oldImages &&
+      !req.body.price &&
+      !req.files
+    ) {
+      return res.status(400).json({ message: 'You must provide at least one field to update' });
+    }
+
     const images = product.images.filter((image) => oldImages.includes(image.public_id));
 
     if (!images.length && (!req.files || !Object.keys(req.files).length)) {
       return res.status(400).json({ message: 'You must provide at least one image' });
     }
 
-    let imageUrls: { url: string; public_id: string }[] = [];
+    let imageUrls: Image[] = [];
 
     if (req.files && Object.keys(req.files).length) {
       for (const file of Object.values(req.files)) {
@@ -81,7 +99,7 @@ async function updateProductController(req: Request, res: Response) {
     };
 
     const updatedProduct = await updateProductBySlug(req.params.slug, productToUpdate);
-    res.json({ message: 'Product updated', product: updatedProduct });
+    res.json({ message: 'Product updated', data: updatedProduct });
   } catch (error: any) {
     logger.error(error.message);
     res.status(500).json({ message: 'Server Error' });

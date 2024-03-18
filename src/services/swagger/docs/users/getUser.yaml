@@ -1,0 +1,37 @@
+/api/users/{userId}:
+  get:
+    tags:
+      - Users
+    description: Consigue un usuario por su ID
+    summary: Conseguir un usuario
+    operationId: getUser
+    parameters:
+      - name: userId
+        in: path
+        description: ID del usuario a encontrar
+        required: true
+        schema:
+          type: string
+          example: 123
+    responses:
+      200:
+        description: Usuario encontrado
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  $ref: '#/components/schemas/User'
+      404:
+        description: Usuario no encontrado
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ApiError'
+      500:
+        description: Error del servidor
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ApiError'

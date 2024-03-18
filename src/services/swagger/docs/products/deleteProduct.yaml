@@ -1,0 +1,49 @@
+/api/products/{slug}:
+  delete:
+    tags:
+      - Products
+    description: Busca un producto por su slug y lo elimina
+    summary: Eliminar un producto
+    operationId: deleteProduct
+    security:
+      - bearerAuth: []
+    parameters:
+      - name: slug
+        in: path
+        description: slug del producto a eliminar
+        required: true
+        schema:
+          type: string
+          example: mandarina-1
+    responses:
+      200:
+        description: Producto eliminado
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: string
+                  description: Mensaje de éxito
+                  example: Producto eliminado
+                data:
+                  $ref: '#/components/schemas/Product'
+      403:
+        description: Acceso denegado
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ApiError'
+      404:
+        description: Producto no encontrado
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ApiError'
+      500:
+        description: Error del servidor
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ApiError'

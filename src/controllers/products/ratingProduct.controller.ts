@@ -6,9 +6,7 @@ const { getProductBySlug } = manageProducts();
 
 async function ratingProductController(req: Request, res: Response) {
   try {
-    const user = req.user;
-
-    if (!user) {
+    if (!req.user) {
       return res.status(401).json({ message: 'Unauthorized - No token provided' });
     }
 
@@ -18,7 +16,7 @@ async function ratingProductController(req: Request, res: Response) {
       return res.status(404).json({ message: 'Product not found' });
     }
 
-    if (product.creatorId === user.userId) {
+    if (product.creatorId === req.user.userId) {
       return res.status(403).json({ message: 'You cannot rate your own product' });
     }
 
@@ -37,7 +35,7 @@ async function ratingProductController(req: Request, res: Response) {
     }
 
     const existingRatingIndex = product.rating.users.findIndex((userRating) => {
-      return userRating.userId === user.userId;
+      return userRating.userId === req.user!.userId;
     });
 
     if (existingRatingIndex !== -1) {
@@ -46,7 +44,7 @@ async function ratingProductController(req: Request, res: Response) {
     }
 
     const comment = req.body.comment || null;
-    product.rating.users.push({ userId: user.userId, rating, comment });
+    product.rating.users.push({ userId: req.user.userId, rating, comment });
 
     const newTotal = ++product.rating.total;
     const totalRatingSum = product.rating.users.reduce(
@@ -61,7 +59,7 @@ async function ratingProductController(req: Request, res: Response) {
 
     await product.save();
 
-    res.status(200).json({ message: 'Rating added successfully', product });
+    res.json({ message: 'Rating added successfully', data: product });
   } catch (error: any) {
     logger.error(error.message);
     res.status(500).json({ message: 'Server Error' });

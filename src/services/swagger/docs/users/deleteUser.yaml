@@ -1,0 +1,49 @@
+/api/users/{userId}:
+  delete:
+    tags:
+      - Users
+    description: Busca un usuario por su ID y lo elimina
+    summary: Eliminar un usuario
+    operationId: deleteUser
+    security:
+      - bearerAuth: []
+    parameters:
+      - name: userId
+        in: path
+        description: ID del usuario a eliminar
+        required: true
+        schema:
+          type: string
+          example: 123
+    responses:
+      200:
+        description: Usuario eliminado
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: string
+                  description: Mensaje de éxito
+                  example: Usuario eliminado
+                data:
+                  $ref: '#/components/schemas/User'
+      403:
+        description: Acceso denegado
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ApiError'
+      404:
+        description: Usuario no encontrado
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ApiError'
+      500:
+        description: Error del servidor
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ApiError'

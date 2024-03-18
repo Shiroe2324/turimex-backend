@@ -4,15 +4,15 @@ import logger from '../../managers/logger.manager';
 import manageProducts from '../../managers/product.manager';
 
 const { deleteImage } = manageImages();
-const { getProductBySlug, deleteProductBySlug } = manageProducts();
+const { deleteProductBySlug, getProductBySlug } = manageProducts();
 
 async function deleteProductController(req: Request, res: Response) {
   try {
-    const product = await getProductBySlug(req.params.slug);
-
     if (!req.user) {
       return res.status(401).json({ message: 'Unauthorized - No token provided' });
     }
+
+    const product = await getProductBySlug(req.params.slug);
 
     if (!product) {
       return res.status(404).json({ message: 'Product not found' });
@@ -23,13 +23,13 @@ async function deleteProductController(req: Request, res: Response) {
     }
 
     const imageDeletePromises = product.images.map(async (image) => {
-      await deleteImage(image.public_id);
+      return await deleteImage(image.public_id);
     });
 
     await Promise.all(imageDeletePromises);
     await deleteProductBySlug(req.params.slug);
 
-    res.json({ message: 'Product removed', product });
+    res.json({ message: 'Product removed', data: product });
   } catch (error: any) {
     logger.error(error.message);
     res.status(500).json({ message: 'Server Error' });

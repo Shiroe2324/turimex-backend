@@ -5,20 +5,25 @@ import logger from '../../managers/logger.manager';
 import Models from '../../managers/models.manager';
 import manageProducts from '../../managers/product.manager';
 
+interface Image {
+  url: string;
+  public_id: string;
+}
+
 const { uploadImage } = manageImages();
 const { createProduct } = manageProducts();
 
 async function createProductController(req: Request, res: Response) {
   try {
-    if (!req.files || Object.keys(req.files).length === 0) {
-      return res.status(400).json({ message: 'No files have been selected.' });
-    }
-
     if (!req.user) {
       return res.status(401).json({ message: 'Unauthorized - No token provided' });
     }
 
-    let imageUrls: { url: string; public_id: string }[] = [];
+    if (!req.files || Object.keys(req.files).length === 0) {
+      return res.status(400).json({ message: 'No files have been selected.' });
+    }
+
+    let imageUrls: Image[] = [];
 
     for (const file of Object.values(req.files)) {
       const images = Array.isArray(file) ? file : [file];
@@ -49,7 +54,7 @@ async function createProductController(req: Request, res: Response) {
 
     const product = await createProduct(productData);
 
-    res.status(201).json({ message: 'Product created', product });
+    res.status(201).json({ message: 'Product created', data: product });
   } catch (error: any) {
     logger.error(error.message);
     res.status(500).json({ message: 'Server Error' });

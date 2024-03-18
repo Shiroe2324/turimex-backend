@@ -5,11 +5,14 @@ import logger from '../../managers/logger.manager';
 import manageUsers from '../../managers/user.manager';
 import config from '../../utils/config';
 
-const { getUserByEmail, createUser, cleanUser } = manageUsers();
+const { jwtSecret } = config;
+const { cleanUser, createUser, getUserByEmail } = manageUsers();
 
 async function registerController(req: Request, res: Response) {
   try {
-    const { username, email, password } = req.body;
+    const email = (req.body.email as string).trim();
+    const password = (req.body.password as string).trim();
+    const username = (req.body.username as string).trim();
 
     const existingUser = await getUserByEmail(email);
 
@@ -20,19 +23,14 @@ async function registerController(req: Request, res: Response) {
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const newUser = await createUser({
-      username,
       email,
       password: hashedPassword,
+      username,
     });
 
-    const token = jwt.sign({ user: newUser.userId }, config.jwtSecret, {
-      expiresIn: '24h',
-    });
+    const token = jwt.sign({ user: newUser.userId }, jwtSecret);
 
-    res.status(201).json({
-      token,
-      user: await cleanUser(newUser),
-    });
+    res.status(201).json({ token, data: await cleanUser(newUser) });
   } catch (error: any) {
     logger.error(error.message);
     res.status(500).json({ message: 'Server Error' });

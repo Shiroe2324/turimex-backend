@@ -12,7 +12,7 @@ async function getUsersController(req: Request, res: Response) {
     const pageSize = parseInt(req.query.pageSize as string) || 10;
 
     res.json({
-      users,
+      data: users,
       page,
       pageSize,
       total,

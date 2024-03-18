@@ -1,0 +1,59 @@
+/api/auth/register:
+  post:
+    tags:
+      - Authentication
+    description: Registra un nuevo usuario y genera un token JWT
+    summary: Registrar un nuevo usuario
+    operationId: register
+    requestBody:
+      description: Datos del nuevo usuario
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              username:
+                type: string
+                description: Nombre de usuario
+                example: john_doe
+              email:
+                type: string
+                description: Correo electrónico del usuario
+                example: john.doe@example.com
+              password:
+                type: string
+                description: Contraseña del usuario
+                example: my-password-123
+    responses:
+      201:
+        description: Registro exitoso
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                token:
+                  type: string
+                  description: Token JWT para la sesión del usuario
+                  example: eyJhbGciOiJIUzI1NiIsInR5
+                data:
+                  $ref: '#/components/schemas/User'
+      400:
+        description: Datos inválidos
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ApiError'
+      422:
+        description: Error de validación
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ValidationError'
+      500:
+        description: Error del servidor
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ApiError'

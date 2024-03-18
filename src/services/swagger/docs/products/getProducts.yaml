@@ -1,0 +1,72 @@
+/api/products:
+  get:
+    tags:
+      - Products
+    description: Consigue todos los productos con los parámetros establecidos
+    summary: Conseguir productos
+    operationId: getProducts
+    parameters:
+      - name: page
+        in: query
+        description: Número de página 
+        required: false
+        explode: true
+        schema:
+          type: integer
+          example: 1
+      - name: pageSize
+        in: query
+        description: Número de productos por página
+        required: false
+        explode: true
+        schema:
+          type: integer
+          example: 10
+      - name: sort
+        in: query
+        description: Campo por el que se ordenan los productos
+        required: false
+        explode: true
+        schema:
+          type: string
+          enum:
+            - createdAt:asc
+            - createdAt:desc
+            - price:asc
+            - price:desc
+    responses:
+      200:
+        description: Productos encontrados
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/Product'
+                page:
+                  type: integer
+                  description: Número de la página actual
+                  example: 1
+                pageSize:
+                  type: integer
+                  description: Número de productos por página
+                  example: 10
+                total:
+                  type: integer
+                  description: Total de productos encontrados
+                  example: 1
+      422:
+        description: Error de validación
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ValidationError'
+      500:
+        description: Error del servidor
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ApiError'

@@ -1,0 +1,84 @@
+/api/products:
+  post:
+    tags:
+      - Products
+    description: Crea un nuevo producto con los datos enviados
+    summary: Crear un producto
+    operationId: createProduct
+    security:
+      - bearerAuth: []
+    requestBody:
+      description: Datos de la creación
+      required: true
+      content:
+        multipart/form-data:
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+                description: Nombre del producto
+                example: mandarina
+              category:
+                type: string
+                description: Categoría del producto
+                example: frutas
+              price:
+                type: number
+                description: Precio del producto
+                example: 100
+              brand:
+                type: string
+                description: Marca del producto
+                example: mandarinas juan
+              countInStock:
+                type: number
+                description: Cantidad en stock del producto
+                example: 10
+              description:
+                type: string
+                description: Descripción del producto
+                example: mandarinas de buena calidad
+              images:
+                type: array
+                description: Array de imágenes del producto
+                items:
+                  type: string
+                  format: binary
+    responses:
+      201:
+        description: Producto creado
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: string
+                  example: Producto creado
+                data:
+                  $ref: '#/components/schemas/Product'
+      400:
+        description: Datos inválidos
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ApiError'
+      401:
+        description: Autenticación fallida
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ApiError'
+      422:
+        description: Error de validación
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ValidationError'
+      500:
+        description: Error del servidor
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ApiError'

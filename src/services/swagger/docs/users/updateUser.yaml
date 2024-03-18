@@ -1,0 +1,82 @@
+/api/users/{userId}:
+  put:
+    tags:
+      - Users
+    description: Busca un usuario por su ID y lo actualiza
+    summary: Actualizar un usuario
+    operationId: updateUser
+    security:
+      - bearerAuth: []
+    parameters:
+      - name: userId
+        in: path
+        description: ID del usuario a actualizar
+        required: true
+        schema:
+          type: string
+          example: 123
+    requestBody:
+      description: Datos de la actualización
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              username:
+                type: string
+                description: Nuevo nombre de usuario
+                example: john_doe
+              password:
+                type: string
+                description: Nueva contraseña
+                example: my-password-123
+    responses:
+      200:
+        description: Usuario actualizado
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: string
+                  example: Usuario actualizado
+                data:
+                  $ref: '#/components/schemas/User'
+      400:
+        description: Datos inválidos
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ApiError'
+      401:
+        description: Autenticación fallida
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ApiError'
+      403:
+        description: Acceso denegado
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ApiError'
+      404:
+        description: Usuario no encontrado
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ApiError'
+      422:
+        description: Error de validación
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ValidationError'
+      500:
+        description: Error del servidor
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ApiError'

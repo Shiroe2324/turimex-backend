@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import logger from '../../managers/logger.manager';
 import manageProducts from '../../managers/product.manager';
 
-const { getPagenizedProducts, countProducts } = manageProducts();
+const { countProducts, getPagenizedProducts } = manageProducts();
 
 async function getProductsController(req: Request, res: Response) {
   try {
@@ -12,7 +12,7 @@ async function getProductsController(req: Request, res: Response) {
     const total = await countProducts();
 
     res.json({
-      products,
+      data: products,
       page,
       pageSize,
       total,

@@ -5,8 +5,8 @@ import getProductController from '../controllers/products/getProduct.controller'
 import getProductsController from '../controllers/products/getProducts.controller';
 import ratingProductController from '../controllers/products/ratingProduct.controller';
 import updateProductController from '../controllers/products/updateProduct.controller';
-import validateFields from '../middlewares/validateFields';
-import authenticate from '../middlewares/authentication';
+import authenticationMiddleware from '../middlewares/authentication.middleware';
+import validateFieldsMiddleware from '../middlewares/validateFields.middleware';
 import createProductValidator from '../validators/products/createProduct.validator';
 import getProductsValidator from '../validators/products/getProducts.validator';
 import ratingProductValidator from '../validators/products/ratingProduct.validator';
@@ -14,22 +14,34 @@ import updateProductValidator from '../validators/products/updateProduct.validat
 
 const router = Router();
 
-router.post('/', authenticate, createProductValidator, validateFields, createProductController);
+router.post(
+  '/',
+  authenticationMiddleware,
+  createProductValidator,
+  validateFieldsMiddleware,
+  createProductController,
+);
 
-router.delete('/:slug', authenticate, deleteProductController);
+router.delete('/:slug', authenticationMiddleware, deleteProductController);
 
 router.get('/:slug', getProductController);
 
-router.get('/', getProductsValidator, validateFields, getProductsController);
+router.get('/', getProductsValidator, validateFieldsMiddleware, getProductsController);
 
-router.post(
+router.patch(
   '/:slug/rating',
-  authenticate,
+  authenticationMiddleware,
   ratingProductValidator,
-  validateFields,
+  validateFieldsMiddleware,
   ratingProductController,
 );
 
-router.put('/:slug', authenticate, updateProductValidator, validateFields, updateProductController);
+router.put(
+  '/:slug',
+  authenticationMiddleware,
+  updateProductValidator,
+  validateFieldsMiddleware,
+  updateProductController,
+);
 
 export default router;

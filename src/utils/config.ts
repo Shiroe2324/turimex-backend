@@ -8,6 +8,7 @@ const config = {
   mongodbUri: process.env.MONGODB_URI!,
   nodeEnv: process.env.NODE_ENV || 'development',
   port: process.env.PORT || 3000,
+  productionServer: process.env.PRODUCTION_SERVER || 'https://turimex.onrender.com',
 };
 
 export default config;

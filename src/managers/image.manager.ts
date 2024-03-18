@@ -1,10 +1,7 @@
-import { deleteImage, uploadImage } from '../services/cloudinary/cloudinary.service';
+import cloudinaryImageManager from '../services/cloudinary/cloudinary.service';
 
 function manageImages() {
-  return {
-    deleteImage,
-    uploadImage,
-  };
+  return { ...cloudinaryImageManager() };
 }
 
 export default manageImages;

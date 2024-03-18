@@ -1,0 +1,70 @@
+/api/users:
+  get:
+    tags:
+      - Users
+    description: Consigue todos los usuarios con los parámetros establecidos
+    summary: Conseguir usuarios
+    operationId: getUsers
+    parameters:
+      - name: page
+        in: query
+        description: Número de página 
+        required: false
+        explode: true
+        schema:
+          type: integer
+          example: 1
+      - name: pageSize
+        in: query
+        description: Número de usuarios por página
+        required: false
+        explode: true
+        schema:
+          type: integer
+          example: 10
+      - name: sort
+        in: query
+        description: Campo por el que se ordenan los usuarios
+        required: false
+        explode: true
+        schema:
+          type: string
+          enum:
+            - createdAt:asc
+            - createdAt:desc
+    responses:
+      200:
+        description: Usuarios encontrados
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/User'
+                page:
+                  type: integer
+                  description: Número de la página actual
+                  example: 1
+                pageSize:
+                  type: integer
+                  description: Número de usuarios por página
+                  example: 10
+                total:
+                  type: integer
+                  description: Total de usuarios encontrados
+                  example: 1
+      422:
+        description: Error de validación
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ValidationError'
+      500:
+        description: Error del servidor
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ApiError'

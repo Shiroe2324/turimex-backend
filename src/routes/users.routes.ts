@@ -4,28 +4,34 @@ import getUserController from '../controllers/users/getUser.controller';
 import getUsersController from '../controllers/users/getUsers.controller';
 import updateAvatarController from '../controllers/users/updateAvatar.controller';
 import updateUserController from '../controllers/users/updateUser.controller';
-import authenticate from '../middlewares/authentication';
-import validateFields from '../middlewares/validateFields';
+import authenticationMiddleware from '../middlewares/authentication.middleware';
+import validateFieldsMiddleware from '../middlewares/validateFields.middleware';
 import getUsersValidator from '../validators/users/getUsers.validator';
 import updateAvatarValidator from '../validators/users/updateAvatar.validator';
 import updateUserValidator from '../validators/users/updateUser.validator';
 
 const router = Router();
 
-router.delete('/:userId', authenticate, deleteUserController);
+router.delete('/:userId', authenticationMiddleware, deleteUserController);
 
 router.get('/:userId', getUserController);
 
-router.get('/', authenticate, getUsersValidator, validateFields, getUsersController);
+router.get('/', getUsersValidator, validateFieldsMiddleware, getUsersController);
 
 router.put(
   '/:userId/avatar',
-  authenticate,
+  authenticationMiddleware,
   updateAvatarValidator,
-  validateFields,
+  validateFieldsMiddleware,
   updateAvatarController,
 );
 
-router.put('/:userId', authenticate, updateUserValidator, validateFields, updateUserController);
+router.put(
+  '/:userId',
+  authenticationMiddleware,
+  updateUserValidator,
+  validateFieldsMiddleware,
+  updateUserController,
+);
 
 export default router;

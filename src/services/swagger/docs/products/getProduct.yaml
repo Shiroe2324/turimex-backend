@@ -1,0 +1,37 @@
+/api/products/{slug}:
+  get:
+    tags:
+      - Products
+    description: Consigue un producto por su slug
+    summary: Conseguir un producto
+    operationId: getProduct
+    parameters:
+      - name: slug
+        in: path
+        description: slug del producto a encontrar
+        required: true
+        schema:
+          type: string
+          example: mandarina-1
+    responses:
+      200:
+        description: Producto encontrado
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  $ref: '#/components/schemas/Product'
+      404:
+        description: Producto no encontrado
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ApiError'
+      500:
+        description: Error del servidor
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ApiError'

@@ -21,7 +21,7 @@ async function updateAvatarController(req: Request, res: Response) {
       return res.status(404).json({ message: 'User not found' });
     }
 
-    if (user._id.toString() !== req.user._id && !req.user.isAdmin) {
+    if (user.userId !== req.user.userId && !req.user.isAdmin) {
       return res.status(403).json({ message: 'You are not authorized to update this avatar' });
     }
 
@@ -34,7 +34,7 @@ async function updateAvatarController(req: Request, res: Response) {
     if (Array.isArray(avatar)) {
       return res.status(400).json({ message: 'Only one file is allowed' });
     }
-
+    
     if (user.avatar) {
       await deleteImage(user.avatar.public_id);
     }
@@ -54,7 +54,7 @@ async function updateAvatarController(req: Request, res: Response) {
       return res.status(500).json({ message: 'Avatar could not be updated' });
     }
 
-    res.json({ message: 'Avatar updated successfully', user: await cleanUser(updatedUser) });
+    res.json({ message: 'Avatar updated successfully', data: await cleanUser(updatedUser) });
   } catch (error: any) {
     logger.error(error.message);
     res.status(500).json({ message: 'Server Error' });

@@ -12,5 +12,5 @@
     "types": ["node", "express", "./src/@types/express.d.ts"]
   },
   "exclude": ["node_modules", ".idx", "build", "logs"],
-  "include": ["src/**/*.ts"]
+  "include": ["src/**/*.ts", "src/**/*.yaml"]
 }

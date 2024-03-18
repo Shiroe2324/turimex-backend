@@ -6,7 +6,7 @@ const updateProductValidator = [
     .optional()
     .isString()
     .trim()
-    .withMessage('Name is required')
+    .withMessage('Name must be a string')
     .isLength({ min: 3 })
     .withMessage('Name must be at least 3 characters'),
 
@@ -14,15 +14,15 @@ const updateProductValidator = [
 
   body('oldImages').optional().isArray().withMessage('Old images must be an array'),
 
-  body('category').optional().isString().trim().withMessage('Category is required'),
+  body('category').optional().isString().trim().withMessage('Category must be a string'),
 
   body('price').optional().isNumeric().withMessage('Price must be a number'),
 
-  body('brand').optional().isString().trim().withMessage('Brand is required'),
+  body('brand').optional().isString().trim().withMessage('Brand must be a string'),
 
   body('countInStock').optional().isNumeric().withMessage('Count in stock must be a number'),
 
-  body('description').optional().isString().trim().withMessage('Description is required'),
+  body('description').optional().isString().trim().withMessage('Description must be a string'),
 ];
 
 export default updateProductValidator;

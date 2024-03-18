@@ -1,0 +1,82 @@
+/api/products/{slug}/rating:
+  patch:
+    tags:
+      - Products
+    description: Busca un producto por su slug y lo califica
+    summary: Calificar un producto
+    operationId: ratingProduct
+    security:
+      - bearerAuth: []
+    parameters:
+      - name: slug
+        in: path
+        description: slug del producto a calificar
+        required: true
+        schema:
+          type: string
+          example: mandarina-1
+    requestBody:
+      description: Datos de la calificación
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              rating:
+                type: integer
+                description: Calificación del producto
+                example: 5
+              comment:
+                type: string
+                description: Comentario opcional del producto
+                example: Me gusta la mandarina
+    responses:
+      200:
+        description: Producto calificado
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: string
+                  example: Producto calificado
+                data:
+                  $ref: '#/components/schemas/Product'
+      400:
+        description: Datos inválidos
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ApiError'
+      401:
+        description: Autenticación fallida
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ApiError'
+      403:
+        description: Acceso denegado
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ApiError'
+      404:
+        description: Producto no encontrado
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ApiError'
+      422:
+        description: Error de validación
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ValidationError'
+      500:
+        description: Error del servidor
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ApiError'

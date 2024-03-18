@@ -62,7 +62,12 @@ async function updateUserById(userId: string, user: Partial<User>) {
   return updatedUser;
 }
 
-async function deleteUser(userId: string) {
+async function deleteUserByEmail(email: string) {
+  const deletedUser = await UserModel.findOneAndDelete({ email });
+  return deletedUser;
+}
+
+async function deleteUserById(userId: string) {
   const deletedUser = await UserModel.findOneAndDelete({ userId });
   return deletedUser;
 }
@@ -83,7 +88,8 @@ function manageUsers() {
     createUser,
     updateUserByEmail,
     updateUserById,
-    deleteUser,
+    deleteUserByEmail,
+    deleteUserById,
     countUsers,
   };
 }

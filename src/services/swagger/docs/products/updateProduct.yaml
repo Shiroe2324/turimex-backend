@@ -1,0 +1,109 @@
+/api/products/{slug}:
+  put:
+    tags:
+      - Products
+    description: Busca un producto por su slug y lo actualiza
+    summary: Actualizar un producto
+    operationId: updateProduct
+    security:
+      - bearerAuth: []
+    parameters:
+      - name: slug
+        in: path
+        description: slug del producto a actualizar
+        required: true
+        schema:
+          type: string
+          example: mandarina-1
+    requestBody:
+      description: Datos de la actualización
+      required: true
+      content:
+        multipart/form-data:
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+                description: Nombre del producto
+                example: mandarina
+              category:
+                type: string
+                description: Categoría del producto
+                example: frutas
+              price:
+                type: number
+                description: Precio del producto
+                example: 100
+              brand:
+                type: string
+                description: Marca del producto
+                example: mandarinas juan
+              countInStock:
+                type: number
+                description: Cantidad en stock del producto
+                example: 10
+              description:
+                type: string
+                description: Descripción del producto
+                example: mandarinas de buena calidad
+              oldImages:
+                type: array
+                description: Array de imágenes antiguas a mantener del producto
+                items:
+                  type: string
+              images:
+                type: array
+                description: Array de imágenes nuevas a agregar al producto
+                items:
+                  type: string
+                  format: binary
+    responses:
+      200:
+        description: Producto actualizado
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: string
+                  example: Producto actualizado
+                data:
+                  $ref: '#/components/schemas/Product'
+      400:
+        description: Datos inválidos
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ApiError'
+      401:
+        description: Autenticación fallida
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ApiError'
+      403:
+        description: Acceso denegado
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ApiError'
+      404:
+        description: Producto no encontrado
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ApiError'
+      422:
+        description: Error de validación
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ValidationError'
+      500:
+        description: Error del servidor
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ApiError'
