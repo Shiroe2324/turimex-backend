@@ -10,7 +10,7 @@ const info: swaggerJSDoc.Information = {
 
 const servers: swaggerJSDoc.Server[] = [
   {
-    url: config.productionServer,
+    url: config.productionBackendServer,
     description: 'Servidor de producción',
   },
   {

@@ -5,6 +5,7 @@ const User = {
     avatar: { $ref: '#/components/schemas/Image' },
     email: { type: 'string', example: 'john.doe@example.com' },
     isAdmin: { type: 'boolean', example: false },
+    isVerified: { type: 'boolean', example: true },
     username: { type: 'string', example: 'john_doe' },
     userId: { type: 'string', example: '123' },
     createdAt: { type: 'string', example: '2022-01-01T00:00:00.000Z' },

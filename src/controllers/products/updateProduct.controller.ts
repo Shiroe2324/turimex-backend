@@ -17,7 +17,7 @@ async function updateProductController(req: Request, res: Response) {
     if (!req.user) {
       return res.status(401).json({ message: 'Unauthorized - No token provided' });
     }
-    
+
     const oldImages: String[] = req.body.oldImages || [];
 
     if (!oldImages.every((image) => typeof image === 'string')) {

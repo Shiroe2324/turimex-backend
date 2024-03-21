@@ -28,9 +28,12 @@ async function registerController(req: Request, res: Response) {
       username,
     });
 
-    const token = jwt.sign({ user: newUser.userId }, jwtSecret);
+    // const token = jwt.sign({ user: newUser.userId }, jwtSecret);
 
-    res.status(201).json({ token, data: await cleanUser(newUser) });
+    res.status(201).json({
+      message: 'User registered successfully',
+      data: await cleanUser(newUser),
+    });
   } catch (error: any) {
     logger.error(error.message);
     res.status(500).json({ message: 'Server Error' });

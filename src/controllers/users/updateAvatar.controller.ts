@@ -34,7 +34,7 @@ async function updateAvatarController(req: Request, res: Response) {
     if (Array.isArray(avatar)) {
       return res.status(400).json({ message: 'Only one file is allowed' });
     }
-    
+
     if (user.avatar) {
       await deleteImage(user.avatar.public_id);
     }

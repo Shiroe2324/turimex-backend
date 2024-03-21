@@ -2,7 +2,7 @@
   post:
     tags:
       - Authentication
-    description: Autentica un usuario y genera un token JWT
+    description: Autentica un usuario y genera un token JWT, se necesita estar registrado y verificado para ello
     summary: Autenticar un usuario
     operationId: login
     requestBody:
@@ -30,9 +30,9 @@
               type: object
               properties:
                 token:
-                    type: string
-                    description: Token JWT para la sesión del usuario
-                    example: eyJhbGciOiJIUzI1NiIsInR5
+                  type: string
+                  description: Token JWT para la sesión del usuario
+                  example: eyJhbGciOiJIUzI1NiIsInR5
                 data:
                   $ref: '#/components/schemas/User'
       400:
