@@ -6,7 +6,8 @@
     "create-docs": "ts-node src/services/swagger/swagger.service.ts",
     "format": "prettier --write \"src/**/*.ts\" \"src/**/**/*.ts\" --config ./.prettierrc",
     "start:dev": "nodemon",
-    "start": "node build/index.js"
+    "start": "node build/index.js",
+    "test": "ts-node src/index.ts"
   },
   "dependencies": {
     "bcrypt": "^5.1.1",

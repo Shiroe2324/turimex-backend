@@ -1,8 +1,8 @@
-import cors from 'cors';
 import express from 'express';
 import fileUpload from 'express-fileupload';
 import helmet from 'helmet';
 import swaggerUiExpress from 'swagger-ui-express';
+import corsMiddleware from './middlewares/cors.middleware';
 import authenticationRoutes from './routes/authentication.routes';
 import productsRoutes from './routes/products.routes';
 import usersRoutes from './routes/users.routes';
@@ -10,7 +10,7 @@ import swaggerSpec from './services/swagger/swagger.service';
 
 const app = express();
 
-app.use(cors());
+app.use(corsMiddleware);
 app.use(helmet());
 app.use(express.json());
 app.use(fileUpload({ useTempFiles: true }));
