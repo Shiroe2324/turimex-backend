@@ -2,13 +2,13 @@
   get:
     tags:
       - Products
-    description: Consigue todos los productos con los parámetros establecidos
-    summary: Conseguir productos
+    description: Get all products with the specified parameters
+    summary: Get products
     operationId: getProducts
     parameters:
       - name: page
         in: query
-        description: Número de página 
+        description: Page number
         required: false
         explode: true
         schema:
@@ -16,7 +16,7 @@
           example: 1
       - name: pageSize
         in: query
-        description: Número de productos por página
+        description: Number of products per page
         required: false
         explode: true
         schema:
@@ -24,7 +24,7 @@
           example: 10
       - name: sort
         in: query
-        description: Campo por el que se ordenan los productos
+        description: Field by which the products are sorted
         required: false
         explode: true
         schema:
@@ -36,7 +36,7 @@
             - price:desc
     responses:
       200:
-        description: Productos encontrados
+        description: Products found
         content:
           application/json:
             schema:
@@ -48,24 +48,24 @@
                     $ref: '#/components/schemas/Product'
                 page:
                   type: integer
-                  description: Número de la página actual
+                  description: Current page number
                   example: 1
                 pageSize:
                   type: integer
-                  description: Número de productos por página
+                  description: Number of products per page
                   example: 10
                 total:
                   type: integer
-                  description: Total de productos encontrados
+                  description: Total number of products found
                   example: 1
       422:
-        description: Error de validación
+        description: Validation error
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/ValidationError'
       500:
-        description: Error del servidor
+        description: Server error
         content:
           application/json:
             schema:

@@ -2,11 +2,11 @@
   post:
     tags:
       - Authentication
-    description: Registra un nuevo usuario en la base de datos
-    summary: Registrar un nuevo usuario
+    description: Registers a new user in the database
+    summary: Register a new user
     operationId: register
     requestBody:
-      description: Datos del nuevo usuario
+      description: Data of the new user
       required: true
       content:
         application/json:
@@ -15,19 +15,19 @@
             properties:
               username:
                 type: string
-                description: Nombre de usuario
+                description: User's name
                 example: john_doe
               email:
                 type: string
-                description: Correo electrónico del usuario
+                description: User's email address
                 example: john.doe@example.com
               password:
                 type: string
-                description: Contraseña del usuario
+                description: User's password
                 example: my-password-123
     responses:
       201:
-        description: Registro exitoso
+        description: Successful registration
         content:
           application/json:
             schema:
@@ -35,23 +35,23 @@
               properties:
                 message:
                   type: string
-                  example: Registro exitoso
+                  example: User registered successfully
                 data:
                   $ref: '#/components/schemas/User'
       400:
-        description: Datos inválidos
+        description: Invalid data
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/ApiError'
       422:
-        description: Error de validación
+        description: Validation error
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/ValidationError'
       500:
-        description: Error del servidor
+        description: Server error
         content:
           application/json:
             schema:

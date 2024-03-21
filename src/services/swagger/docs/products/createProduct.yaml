@@ -2,13 +2,13 @@
   post:
     tags:
       - Products
-    description: Crea un nuevo producto con los datos enviados
-    summary: Crear un producto
+    description: Create a new product with the provided data
+    summary: Create a product
     operationId: createProduct
     security:
       - bearerAuth: []
     requestBody:
-      description: Datos de la creación
+      description: Data for the creation
       required: true
       content:
         multipart/form-data:
@@ -17,37 +17,37 @@
             properties:
               name:
                 type: string
-                description: Nombre del producto
-                example: mandarina
+                description: Product name
+                example: mandarin
               category:
                 type: string
-                description: Categoría del producto
-                example: frutas
+                description: Product category
+                example: fruits
               price:
                 type: number
-                description: Precio del producto
+                description: Product price
                 example: 100
               brand:
                 type: string
-                description: Marca del producto
-                example: mandarinas juan
+                description: Product brand
+                example: juan's mandarins
               countInStock:
                 type: number
-                description: Cantidad en stock del producto
+                description: Product stock count
                 example: 10
               description:
                 type: string
-                description: Descripción del producto
-                example: mandarinas de buena calidad
+                description: Product description
+                example: high-quality mandarins
               images:
                 type: array
-                description: Array de imágenes del producto
+                description: Array of product images
                 items:
                   type: string
                   format: binary
     responses:
       201:
-        description: Producto creado
+        description: Product created
         content:
           application/json:
             schema:
@@ -55,29 +55,29 @@
               properties:
                 message:
                   type: string
-                  example: Producto creado
+                  example: Product created
                 data:
                   $ref: '#/components/schemas/Product'
       400:
-        description: Datos inválidos
+        description: Invalid data
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/ApiError'
       401:
-        description: Autenticación fallida
+        description: Unauthorized
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/ApiError'
       422:
-        description: Error de validación
+        description: Validation error
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/ValidationError'
       500:
-        description: Error del servidor
+        description: Server error
         content:
           application/json:
             schema:

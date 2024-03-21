@@ -2,21 +2,21 @@
   put:
     tags:
       - Users
-    description: Busca un usuario por su ID y actualiza su avatar
-    summary: Actualizar avatar de un usuario
+    description: Find a user by their ID and update their avatar
+    summary: Update user's avatar
     operationId: updateAvatar
     security:
       - bearerAuth: []
     parameters:
       - name: userId
         in: path
-        description: ID del usuario a actualizar el avatar
+        description: ID of the user to update the avatar
         required: true
         schema:
           type: string
           example: 123
     requestBody:
-      description: Datos de la actualización
+      description: Update data
       required: true
       content:
         multipart/form-data:
@@ -25,11 +25,11 @@
             properties:
               avatar:
                 type: string
-                description: Nuevo avatar del usuario en un archivo de tipo imagen 
+                description: New user avatar in an image file
                 format: binary
     responses:
       200:
-        description: Avatar actualizado
+        description: Avatar updated
         content:
           application/json:
             schema:
@@ -37,41 +37,41 @@
               properties:
                 message:
                   type: string
-                  example: Avatar actualizado
+                  example: Avatar updated
                 data:
                   $ref: '#/components/schemas/User'
       400:
-        description: Datos inválidos
+        description: Invalid data
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/ApiError'
       401:
-        description: Autenticación fallida
+        description: Unauthorized
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/ApiError'
       403:
-        description: Acceso denegado
+        description: Access denied
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/ApiError'
       404:
-        description: Usuario no encontrado
+        description: User not found
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/ApiError'
       422:
-        description: Error de validación
+        description: Validation error
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/ValidationError'
       500:
-        description: Error del servidor
+        description: Server error
         content:
           application/json:
             schema:

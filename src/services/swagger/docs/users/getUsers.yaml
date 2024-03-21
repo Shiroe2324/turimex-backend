@@ -2,13 +2,13 @@
   get:
     tags:
       - Users
-    description: Consigue todos los usuarios con los parámetros establecidos
-    summary: Conseguir usuarios
+    description: Get all users with the specified parameters
+    summary: Get users
     operationId: getUsers
     parameters:
       - name: page
         in: query
-        description: Número de página 
+        description: Page number
         required: false
         explode: true
         schema:
@@ -16,7 +16,7 @@
           example: 1
       - name: pageSize
         in: query
-        description: Número de usuarios por página
+        description: Number of users per page
         required: false
         explode: true
         schema:
@@ -24,7 +24,7 @@
           example: 10
       - name: sort
         in: query
-        description: Campo por el que se ordenan los usuarios
+        description: Field by which users are sorted
         required: false
         explode: true
         schema:
@@ -34,7 +34,7 @@
             - createdAt:desc
     responses:
       200:
-        description: Usuarios encontrados
+        description: Users found
         content:
           application/json:
             schema:
@@ -46,24 +46,24 @@
                     $ref: '#/components/schemas/User'
                 page:
                   type: integer
-                  description: Número de la página actual
+                  description: Current page number
                   example: 1
                 pageSize:
                   type: integer
-                  description: Número de usuarios por página
+                  description: Number of users per page
                   example: 10
                 total:
                   type: integer
-                  description: Total de usuarios encontrados
+                  description: Total users found
                   example: 1
       422:
-        description: Error de validación
+        description: Validation error
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/ValidationError'
       500:
-        description: Error del servidor
+        description: Server error
         content:
           application/json:
             schema:

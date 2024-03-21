@@ -2,11 +2,11 @@
   post:
     tags:
       - Authentication
-    description: Autentica un usuario y genera un token JWT, se necesita estar registrado y verificado para ello
-    summary: Autenticar un usuario
+    description: Authenticates a user and generates a JWT token. User must be registered and verified.
+    summary: Authenticate a user
     operationId: login
     requestBody:
-      description: Datos del usuario
+      description: User data
       required: true
       content:
         application/json:
@@ -15,15 +15,15 @@
             properties:
               email:
                 type: string
-                description: Correo electrónico del usuario
+                description: User's email address
                 example: john.doe@example.com
               password:
                 type: string
-                description: Contraseña del usuario
+                description: User's password
                 example: my-password-123
     responses:
       200:
-        description: Autenticación exitosa
+        description: Successful authentication
         content:
           application/json:
             schema:
@@ -31,30 +31,24 @@
               properties:
                 token:
                   type: string
-                  description: Token JWT para la sesión del usuario
+                  description: JWT token for user session
                   example: eyJhbGciOiJIUzI1NiIsInR5
                 data:
                   $ref: '#/components/schemas/User'
-      400:
-        description: Datos inválidos
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/ApiError'
       401:
-        description: Autenticación fallida
+        description: Authentication failed
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/ApiError'
       422:
-        description: Error de validación
+        description: Validation error
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/ValidationError'
       500:
-        description: Error del servidor
+        description: Server error
         content:
           application/json:
             schema:

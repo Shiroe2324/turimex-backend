@@ -2,20 +2,20 @@
   get:
     tags:
       - Users
-    description: Consigue un usuario por su ID
-    summary: Conseguir un usuario
+    description: Get a user by their ID
+    summary: Get a user
     operationId: getUser
     parameters:
       - name: userId
         in: path
-        description: ID del usuario a encontrar
+        description: ID of the user to find
         required: true
         schema:
           type: string
           example: 123
     responses:
       200:
-        description: Usuario encontrado
+        description: User found
         content:
           application/json:
             schema:
@@ -24,13 +24,13 @@
                 data:
                   $ref: '#/components/schemas/User'
       404:
-        description: Usuario no encontrado
+        description: User not found
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/ApiError'
       500:
-        description: Error del servidor
+        description: Server error
         content:
           application/json:
             schema:

@@ -17,13 +17,13 @@ async function ratingProductController(req: Request, res: Response) {
     }
 
     if (product.creatorId === req.user.userId) {
-      return res.status(403).json({ message: 'You cannot rate your own product' });
+      return res.status(403).json({ message: 'Access denied - You cannot rate your own product' });
     }
 
     const rating = parseInt(req.body.rating);
 
     if (isNaN(rating)) {
-      return res.status(400).json({ message: 'Rating must be a number' });
+      return res.status(400).json({ message: 'Invalid data - Rating must be a number' });
     }
 
     if (!product.rating) {

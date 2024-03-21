@@ -1,3 +1,5 @@
+const port = Number(process.env.PORT) || 3000;
+
 const config = {
   cloudinary: {
     apiKey: process.env.CLOUDINARY_API_KEY!,
@@ -7,9 +9,9 @@ const config = {
   jwtSecret: process.env.JWT_SECRET!,
   mongodbUri: process.env.MONGODB_URI!,
   nodeEnv: process.env.NODE_ENV || 'development',
-  port: process.env.PORT || 3000,
-  productionBackendServer:
-    process.env.PRODUCTION_BACKEND_SERVER || `http://localhost:${process.env.PORT || 3000}`,
+  port,
+  productionBackendServer: process.env.PRODUCTION_BACKEND_SERVER || `http://localhost:${port}`,
+  productionFrontendServer: process.env.PRODUCTION_FRONTEND_SERVER || 'http://localhost:4000',
 };
 
 export default config;

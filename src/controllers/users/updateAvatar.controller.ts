@@ -22,17 +22,17 @@ async function updateAvatarController(req: Request, res: Response) {
     }
 
     if (user.userId !== req.user.userId && !req.user.isAdmin) {
-      return res.status(403).json({ message: 'You are not authorized to update this avatar' });
+      return res.status(403).json({ message: 'Access denied - You are not authorized to update this avatar' });
     }
 
     if (!req.files || Object.keys(req.files).length === 0) {
-      return res.status(400).json({ message: 'No files have been selected.' });
+      return res.status(400).json({ message: 'Invalid data - No files have been selected.' });
     }
 
     const avatar = Object.values(req.files)[0];
 
     if (Array.isArray(avatar)) {
-      return res.status(400).json({ message: 'Only one file is allowed' });
+      return res.status(400).json({ message: 'Invalid data - Only one file is allowed' });
     }
 
     if (user.avatar) {

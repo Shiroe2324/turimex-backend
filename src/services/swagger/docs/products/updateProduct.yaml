@@ -1,22 +1,23 @@
+
 /api/products/{slug}:
   put:
     tags:
       - Products
-    description: Busca un producto por su slug y lo actualiza
-    summary: Actualizar un producto
+    description: Find a product by its slug and update it
+    summary: Update a product
     operationId: updateProduct
     security:
       - bearerAuth: []
     parameters:
       - name: slug
         in: path
-        description: slug del producto a actualizar
+        description: slug of the product to update
         required: true
         schema:
           type: string
-          example: mandarina-1
+          example: mandarin-1
     requestBody:
-      description: Datos de la actualización
+      description: Update data
       required: true
       content:
         multipart/form-data:
@@ -25,42 +26,42 @@
             properties:
               name:
                 type: string
-                description: Nombre del producto
-                example: mandarina
+                description: Product name
+                example: mandarin
               category:
                 type: string
-                description: Categoría del producto
-                example: frutas
+                description: Product category
+                example: fruits
               price:
                 type: number
-                description: Precio del producto
+                description: Product price
                 example: 100
               brand:
                 type: string
-                description: Marca del producto
-                example: mandarinas juan
+                description: Product brand
+                example: juan's mandarins
               countInStock:
                 type: number
-                description: Cantidad en stock del producto
+                description: Product stock count
                 example: 10
               description:
                 type: string
-                description: Descripción del producto
-                example: mandarinas de buena calidad
+                description: Product description
+                example: high-quality mandarins
               oldImages:
                 type: array
-                description: Array de imágenes antiguas a mantener del producto
+                description: Array of old images to keep for the product
                 items:
                   type: string
               images:
                 type: array
-                description: Array de imágenes nuevas a agregar al producto
+                description: Array of new images to add to the product
                 items:
                   type: string
                   format: binary
     responses:
       200:
-        description: Producto actualizado
+        description: Product updated
         content:
           application/json:
             schema:
@@ -68,41 +69,41 @@
               properties:
                 message:
                   type: string
-                  example: Producto actualizado
+                  example: Product updated
                 data:
                   $ref: '#/components/schemas/Product'
       400:
-        description: Datos inválidos
+        description: Invalid data
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/ApiError'
       401:
-        description: Autenticación fallida
+        description: Unauthorized
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/ApiError'
       403:
-        description: Acceso denegado
+        description: Access denied
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/ApiError'
       404:
-        description: Producto no encontrado
+        description: Product not found
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/ApiError'
       422:
-        description: Error de validación
+        description: Validation error
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/ValidationError'
       500:
-        description: Error del servidor
+        description: Server error
         content:
           application/json:
             schema:

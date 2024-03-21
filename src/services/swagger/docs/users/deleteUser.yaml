@@ -2,22 +2,22 @@
   delete:
     tags:
       - Users
-    description: Busca un usuario por su ID y lo elimina
-    summary: Eliminar un usuario
+    description: Find a user by their ID and delete it
+    summary: Delete a user
     operationId: deleteUser
     security:
       - bearerAuth: []
     parameters:
       - name: userId
         in: path
-        description: ID del usuario a eliminar
+        description: ID of the user to delete
         required: true
         schema:
           type: string
           example: 123
     responses:
       200:
-        description: Usuario eliminado
+        description: User deleted
         content:
           application/json:
             schema:
@@ -25,24 +25,30 @@
               properties:
                 message:
                   type: string
-                  description: Mensaje de éxito
-                  example: Usuario eliminado
+                  description: Success message
+                  example: User deleted
                 data:
                   $ref: '#/components/schemas/User'
+      401:
+        description: Unauthorized
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ApiError'
       403:
-        description: Acceso denegado
+        description: Access denied
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/ApiError'
       404:
-        description: Usuario no encontrado
+        description: User not found
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/ApiError'
       500:
-        description: Error del servidor
+        description: Server error
         content:
           application/json:
             schema:

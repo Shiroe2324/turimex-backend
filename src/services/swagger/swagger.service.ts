@@ -4,33 +4,33 @@ import config from '../../utils/config';
 
 const info: swaggerJSDoc.Information = {
   title: 'Turimex API',
-  description: 'Toda la información sobre el backend de tipo **API** para el programa de `Turimex`',
+  description: 'All the information about the **API** backend for the `Turimex` program',
   version: 'v0.0.1',
 };
 
 const servers: swaggerJSDoc.Server[] = [
   {
     url: config.productionBackendServer,
-    description: 'Servidor de producción',
+    description: 'Production server',
   },
   {
     url: `http://localhost:${config.port}`,
-    description: 'Servidor de desarrollo',
+    description: 'Development server',
   },
 ];
 
 const tags: swaggerJSDoc.Tag[] = [
   {
     name: 'Authentication',
-    description: 'Rutas para la autenticación del usuario',
+    description: 'Routes for user authentication',
   },
   {
     name: 'Products',
-    description: 'Rutas para la gestión de productos',
+    description: 'Routes for product management',
   },
   {
     name: 'Users',
-    description: 'Rutas para la gestión de usuarios',
+    description: 'Routes for user management',
   },
 ];
 
@@ -39,7 +39,7 @@ const securitySchemes = {
     type: 'http',
     bearerFormat: 'JWT',
     scheme: 'bearer',
-    description: 'Token de autenticación de tipo **JSON Web Token** (`JWT`)',
+    description: 'JSON Web Token (`JWT`) authentication token',
   },
 };
 

@@ -20,7 +20,7 @@ async function createProductController(req: Request, res: Response) {
     }
 
     if (!req.files || Object.keys(req.files).length === 0) {
-      return res.status(400).json({ message: 'No files have been selected.' });
+      return res.status(400).json({ message: 'Invalid data - No files have been selected.' });
     }
 
     let imageUrls: Image[] = [];

@@ -2,21 +2,21 @@
   put:
     tags:
       - Users
-    description: Busca un usuario por su ID y lo actualiza
-    summary: Actualizar un usuario
+    description: Find a user by their ID and update it
+    summary: Update a user
     operationId: updateUser
     security:
       - bearerAuth: []
     parameters:
       - name: userId
         in: path
-        description: ID del usuario a actualizar
+        description: ID of the user to update
         required: true
         schema:
           type: string
           example: 123
     requestBody:
-      description: Datos de la actualización
+      description: Update data
       required: true
       content:
         application/json:
@@ -25,15 +25,15 @@
             properties:
               username:
                 type: string
-                description: Nuevo nombre de usuario
+                description: New username
                 example: john_doe
               password:
                 type: string
-                description: Nueva contraseña
+                description: New password
                 example: my-password-123
     responses:
       200:
-        description: Usuario actualizado
+        description: User updated
         content:
           application/json:
             schema:
@@ -41,41 +41,41 @@
               properties:
                 message:
                   type: string
-                  example: Usuario actualizado
+                  example: User updated
                 data:
                   $ref: '#/components/schemas/User'
       400:
-        description: Datos inválidos
+        description: Invalid data
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/ApiError'
       401:
-        description: Autenticación fallida
+        description: Unauthorized
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/ApiError'
       403:
-        description: Acceso denegado
+        description: Access denied
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/ApiError'
       404:
-        description: Usuario no encontrado
+        description: User not found
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/ApiError'
       422:
-        description: Error de validación
+        description: Validation error
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/ValidationError'
       500:
-        description: Error del servidor
+        description: Server error
         content:
           application/json:
             schema:

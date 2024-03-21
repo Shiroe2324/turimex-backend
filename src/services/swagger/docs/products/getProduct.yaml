@@ -2,20 +2,20 @@
   get:
     tags:
       - Products
-    description: Consigue un producto por su slug
-    summary: Conseguir un producto
+    description: Get a product by its slug
+    summary: Get a product
     operationId: getProduct
     parameters:
       - name: slug
         in: path
-        description: slug del producto a encontrar
+        description: Slug of the product to find
         required: true
         schema:
           type: string
-          example: mandarina-1
+          example: mandarin-1
     responses:
       200:
-        description: Producto encontrado
+        description: Product found
         content:
           application/json:
             schema:
@@ -24,13 +24,13 @@
                 data:
                   $ref: '#/components/schemas/Product'
       404:
-        description: Producto no encontrado
+        description: Product not found
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/ApiError'
       500:
-        description: Error del servidor
+        description: Server error
         content:
           application/json:
             schema:

@@ -2,21 +2,21 @@
   patch:
     tags:
       - Products
-    description: Busca un producto por su slug y lo califica
-    summary: Calificar un producto
+    description: Find a product by its slug and rate it
+    summary: Rate a product
     operationId: ratingProduct
     security:
       - bearerAuth: []
     parameters:
       - name: slug
         in: path
-        description: slug del producto a calificar
+        description: slug of the product to rate
         required: true
         schema:
           type: string
-          example: mandarina-1
+          example: mandarin-1
     requestBody:
-      description: Datos de la calificación
+      description: Rating data
       required: true
       content:
         application/json:
@@ -25,15 +25,15 @@
             properties:
               rating:
                 type: integer
-                description: Calificación del producto
+                description: Product rating
                 example: 5
               comment:
                 type: string
-                description: Comentario opcional del producto
-                example: Me gusta la mandarina
+                description: Optional product comment
+                example: I like the mandarin
     responses:
       200:
-        description: Producto calificado
+        description: Product rated
         content:
           application/json:
             schema:
@@ -41,41 +41,41 @@
               properties:
                 message:
                   type: string
-                  example: Producto calificado
+                  example: Product rated
                 data:
                   $ref: '#/components/schemas/Product'
       400:
-        description: Datos inválidos
+        description: Invalid data
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/ApiError'
       401:
-        description: Autenticación fallida
+        description: Unauthorized
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/ApiError'
       403:
-        description: Acceso denegado
+        description: Access denied
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/ApiError'
       404:
-        description: Producto no encontrado
+        description: Product not found
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/ApiError'
       422:
-        description: Error de validación
+        description: Validation error
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/ValidationError'
       500:
-        description: Error del servidor
+        description: Server error
         content:
           application/json:
             schema:

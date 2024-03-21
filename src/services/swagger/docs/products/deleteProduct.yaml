@@ -2,22 +2,22 @@
   delete:
     tags:
       - Products
-    description: Busca un producto por su slug y lo elimina
-    summary: Eliminar un producto
+    description: Find a product by its slug and delete it
+    summary: Delete a product
     operationId: deleteProduct
     security:
       - bearerAuth: []
     parameters:
       - name: slug
         in: path
-        description: slug del producto a eliminar
+        description: Slug of the product to delete
         required: true
         schema:
           type: string
-          example: mandarina-1
+          example: mandarin-1
     responses:
       200:
-        description: Producto eliminado
+        description: Product deleted
         content:
           application/json:
             schema:
@@ -25,24 +25,30 @@
               properties:
                 message:
                   type: string
-                  description: Mensaje de éxito
-                  example: Producto eliminado
+                  description: Success message
+                  example: Product deleted
                 data:
                   $ref: '#/components/schemas/Product'
+      401:
+        description: Unauthorized
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ApiError'
       403:
-        description: Acceso denegado
+        description: Access denied
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/ApiError'
       404:
-        description: Producto no encontrado
+        description: Product not found
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/ApiError'
       500:
-        description: Error del servidor
+        description: Server error
         content:
           application/json:
             schema:
