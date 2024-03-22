@@ -13,6 +13,7 @@ const generalLimiterMiddleware = rateLimit({
   limit: 100,
   standardHeaders: 'draft-7',
   legacyHeaders: true,
+  message: { message: 'Too many requests - please try again later.' },
 });
 
 export const strictLimiterMiddleware = rateLimit({
@@ -20,6 +21,7 @@ export const strictLimiterMiddleware = rateLimit({
   limit: 10,
   standardHeaders: 'draft-7',
   legacyHeaders: true,
+  message: { message: 'Too many requests - please try again later.' },
 });
 
 export default generalLimiterMiddleware;
