@@ -11,7 +11,7 @@ connectDatabases();
 app.listen(config.port, () => {
   const envMessage =
     config.nodeEnv !== 'development'
-      ? `Server listening on port ${config.port}`
-      : `Server listening at ${config.productionBackendServer}`;
+    ? `Server listening at ${config.productionBackendServer}`
+    : `Server listening at http://localhost:${config.port}`;
   logger.info(envMessage);
 });

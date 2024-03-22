@@ -4,11 +4,24 @@ import registerController from '../controllers/authentication/register.controlle
 import validateFieldsMiddleware from '../middlewares/validateFields.middleware';
 import loginValidator from '../validators/authentication/login.validator';
 import registerValidator from '../validators/authentication/register.validator';
+import { strictLimiterMiddleware } from '../middlewares/limiter.middleware';
 
 const router = Router();
 
-router.post('/login', loginValidator, validateFieldsMiddleware, loginController);
+router.post(
+  '/login',
+  strictLimiterMiddleware,
+  loginValidator,
+  validateFieldsMiddleware,
+  loginController,
+);
 
-router.post('/register', registerValidator, validateFieldsMiddleware, registerController);
+router.post(
+  '/register',
+  strictLimiterMiddleware,
+  registerValidator,
+  validateFieldsMiddleware,
+  registerController,
+);
 
 export default router;
