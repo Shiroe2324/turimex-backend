@@ -43,7 +43,7 @@ async function updateUserController(req: Request, res: Response) {
     const updatedUser = await updateUserById(userId, userToUpdate);
 
     if (!updatedUser) {
-      return res.status(500).json({ message: 'User could not be updated' });
+      return res.status(500).json({ message: 'Server Error - User could not be updated' });
     }
 
     res.json({ message: 'User updated successfully', data: await cleanUser(updatedUser) });

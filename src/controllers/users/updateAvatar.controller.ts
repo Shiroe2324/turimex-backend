@@ -53,7 +53,7 @@ async function updateAvatarController(req: Request, res: Response) {
     const updatedUser = await updateUserById(userId, userToUpdate);
 
     if (!updatedUser) {
-      return res.status(500).json({ message: 'Avatar could not be updated' });
+      return res.status(500).json({ message: 'Server Error - Avatar could not be updated' });
     }
 
     res.json({ message: 'Avatar updated successfully', data: await cleanUser(updatedUser) });

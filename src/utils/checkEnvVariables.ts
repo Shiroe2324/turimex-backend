@@ -8,6 +8,7 @@ function checkEnvVariables() {
     'CLOUDINARY_CLOUD_NAME',
     'EMAIL_HOST',
     'EMAIL_PASS',
+    'EMAIL_SENDER',
     'EMAIL_USER',
     'EMAIL_VERIFICATION_URL',
     'JWT_SECRET',

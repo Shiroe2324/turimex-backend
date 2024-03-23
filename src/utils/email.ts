@@ -46,7 +46,7 @@ async function sendVerificationEmail(to: string, name: string, token: string) {
   const processedHtml = processTemplate(processedHtmlData);
 
   const mailOptions: Mail.Options = {
-    from: email.user,
+    from: email.sender,
     to,
     subject: 'Verificación de correo electrónico',
     text: 'Verifica tu correo electrónico',

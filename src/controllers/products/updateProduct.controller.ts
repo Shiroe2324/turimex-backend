@@ -107,6 +107,11 @@ async function updateProductController(req: Request, res: Response) {
     };
 
     const updatedProduct = await updateProductBySlug(req.params.slug, productToUpdate);
+
+    if (!updatedProduct) {
+      return res.status(500).json({ message: 'Server Error - Product could not be updated' });
+    }
+
     res.json({ message: 'Product updated', data: updatedProduct });
   } catch (error: any) {
     logger.error(error.message);
