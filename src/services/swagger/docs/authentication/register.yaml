@@ -2,7 +2,7 @@
   post:
     tags:
       - Authentication
-    description: Registers a new user in the database
+    description: Registers a new user in the database and sends a confirmation email
     summary: Register a new user
     operationId: register
     requestBody:

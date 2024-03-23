@@ -20,7 +20,9 @@ async function deleteUserController(req: Request, res: Response) {
     }
 
     if (user.userId !== req.user.userId && !req.user.isAdmin) {
-      return res.status(403).json({ message: 'Access denied - You are not authorized to delete this user' });
+      return res
+        .status(403)
+        .json({ message: 'Access denied - You are not authorized to delete this user' });
     }
 
     if (user.avatar) {

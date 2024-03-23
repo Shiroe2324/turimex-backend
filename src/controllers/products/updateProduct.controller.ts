@@ -21,7 +21,9 @@ async function updateProductController(req: Request, res: Response) {
     const oldImages: String[] = req.body.oldImages || [];
 
     if (!oldImages.every((image) => typeof image === 'string')) {
-      return res.status(400).json({ message: 'Invalid data - Old images must be an array of strings' });
+      return res
+        .status(400)
+        .json({ message: 'Invalid data - Old images must be an array of strings' });
     }
 
     const product = await getProductBySlug(req.params.slug);
@@ -31,7 +33,9 @@ async function updateProductController(req: Request, res: Response) {
     }
 
     if (product.creatorId !== req.user.userId && !req.user.isAdmin) {
-      return res.status(403).json({ message: 'Access denied - You are not authorized to update this product' });
+      return res
+        .status(403)
+        .json({ message: 'Access denied - You are not authorized to update this product' });
     }
 
     if (
@@ -44,13 +48,17 @@ async function updateProductController(req: Request, res: Response) {
       !req.body.price &&
       !req.files
     ) {
-      return res.status(400).json({ message: 'Invalid data - You must provide at least one field to update' });
+      return res
+        .status(400)
+        .json({ message: 'Invalid data - You must provide at least one field to update' });
     }
 
     const images = product.images.filter((image) => oldImages.includes(image.public_id));
 
     if (!images.length && (!req.files || !Object.keys(req.files).length)) {
-      return res.status(400).json({ message: 'Invalid data - You must provide at least one image' });
+      return res
+        .status(400)
+        .json({ message: 'Invalid data - You must provide at least one image' });
     }
 
     let imageUrls: Image[] = [];

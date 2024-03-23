@@ -1,10 +1,12 @@
 import { v2 as cloudinary } from 'cloudinary';
 import config from '../../utils/config';
 
+const { cloudinary: cloudinaryConfig } = config;
+
 cloudinary.config({
-  api_key: config.cloudinary.apiKey,
-  api_secret: config.cloudinary.apiSecret,
-  cloud_name: config.cloudinary.cloudName,
+  api_key: cloudinaryConfig.apiKey,
+  api_secret: cloudinaryConfig.apiSecret,
+  cloud_name: cloudinaryConfig.cloudName,
   secure: true,
 });
 

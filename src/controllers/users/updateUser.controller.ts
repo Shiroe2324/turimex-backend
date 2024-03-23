@@ -19,7 +19,9 @@ async function updateUserController(req: Request, res: Response) {
     }
 
     if (user.userId !== req.user.userId && !req.user.isAdmin) {
-      return res.status(403).json({ message: 'Access denied - You are not authorized to update this user' });
+      return res
+        .status(403)
+        .json({ message: 'Access denied - You are not authorized to update this user' });
     }
 
     if (!req.body.password && !req.body.username) {

@@ -6,6 +6,10 @@ function checkEnvVariables() {
     'CLOUDINARY_API_KEY',
     'CLOUDINARY_API_SECRET',
     'CLOUDINARY_CLOUD_NAME',
+    'EMAIL_HOST',
+    'EMAIL_PASS',
+    'EMAIL_USER',
+    'EMAIL_VERIFICATION_URL',
     'JWT_SECRET',
     'MONGODB_URI',
   ];

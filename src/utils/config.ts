@@ -6,6 +6,13 @@ const config = {
     apiSecret: process.env.CLOUDINARY_API_SECRET!,
     cloudName: process.env.CLOUDINARY_CLOUD_NAME!,
   },
+  email: {
+    host: process.env.EMAIL_HOST!,
+    pass: process.env.EMAIL_PASS!,
+    port: Number(process.env.EMAIL_PORT) || 465,
+    user: process.env.EMAIL_USER!,
+    verificationUrl: process.env.EMAIL_VERIFICATION_URL!,
+  },
   jwtSecret: process.env.JWT_SECRET!,
   mongodbUri: process.env.MONGODB_URI!,
   nodeEnv: process.env.NODE_ENV || 'development',

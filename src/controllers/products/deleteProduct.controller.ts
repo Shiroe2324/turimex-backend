@@ -19,7 +19,9 @@ async function deleteProductController(req: Request, res: Response) {
     }
 
     if (product.creatorId !== req.user.userId && !req.user.isAdmin) {
-      return res.status(403).json({ message: 'Access denied - You are not authorized to delete this product' });
+      return res
+        .status(403)
+        .json({ message: 'Access denied - You are not authorized to delete this product' });
     }
 
     const imageDeletePromises = product.images.map(async (image) => {
