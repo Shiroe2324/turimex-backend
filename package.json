@@ -3,7 +3,6 @@
   "version": "0.0.1",
   "scripts": {
     "build": "tsc",
-    "create-docs": "ts-node src/services/swagger/swagger.service.ts",
     "format": "prettier --write \"src/**/*.ts\" \"src/**/**/*.ts\" --config ./.prettierrc",
     "start:dev": "nodemon",
     "start": "node build/index.js",

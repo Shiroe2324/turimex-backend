@@ -17,7 +17,7 @@ const transporter = nodemailer.createTransport({
 
 function processTemplate(data: Record<string, string>) {
   const pattern = /\{\{([^}]+)\}\}/g;
-  return htmlTemplate.replace(pattern, (match, key) => data[key]);
+  return htmlTemplate.replace(pattern, (_, key) => data[key]);
 }
 
 export function isSmtpHostDown() {
