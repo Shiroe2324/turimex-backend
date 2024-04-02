@@ -94,11 +94,7 @@ productSchema.pre('save', async function () {
 });
 
 productSchema.path('images').validate((images: { url: string; public_id: string }[]) => {
-  if (!images || images.length === 0) {
-    return false;
-  }
-
-  return true;
+  return images && images.length > 0;
 }, 'Images are required');
 
 export default model<Product>('Product', productSchema);
