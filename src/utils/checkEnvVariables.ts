@@ -1,7 +1,7 @@
 import logger from '../managers/logger.manager';
 
 function checkEnvVariables() {
-  const missingEnvVariables = [];
+  const missingEnvVariables: string[] = [];
   const requiredEnvVariables = [
     'CLOUDINARY_API_KEY',
     'CLOUDINARY_API_SECRET',
@@ -13,6 +13,9 @@ function checkEnvVariables() {
     'EMAIL_VERIFICATION_URL',
     'JWT_SECRET',
     'MONGODB_URI',
+    'REDIS_HOST',
+    'REDIS_PASSWORD',
+    'REDIS_PORT',
   ];
 
   for (const variable of requiredEnvVariables) {

@@ -31,9 +31,9 @@ async function loginController(req: Request, res: Response) {
 
     const token = jwt.sign({ user: user.userId }, jwtSecret);
 
-    res.json({ token, data: await cleanUser(user) });
+    res.json({ token, data: cleanUser(user) });
   } catch (error: any) {
-    logger.error(error.message);
+    logger.error(error);
     res.status(500).json({ message: 'Server Error' });
   }
 }

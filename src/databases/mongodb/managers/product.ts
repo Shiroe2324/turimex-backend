@@ -8,9 +8,25 @@ interface ProductFilters {
   creator?: string;
 }
 
-async function getProducts(options = {}) {
-  const products = await ProductModel.find(options).select('-password').lean();
-  return products;
+async function countProducts() {
+  const count = await ProductModel.countDocuments();
+  return count;
+}
+
+async function createProduct(product: Partial<Product>) {
+  const newProduct = await ProductModel.create(product);
+  await newProduct.save();
+  return newProduct;
+}
+
+async function deleteProductById(id: string) {
+  const deletedProduct = await ProductModel.findByIdAndDelete(id);
+  return deletedProduct;
+}
+
+async function deleteProductBySlug(slug: string) {
+  const deletedProduct = await ProductModel.findOneAndDelete({ slug });
+  return deletedProduct;
 }
 
 async function getPagenizedProducts(req: Request) {
@@ -45,25 +61,19 @@ async function getPagenizedProducts(req: Request) {
   return products;
 }
 
-async function getProductBySlug(slug: string) {
-  const product = await ProductModel.findOne({ slug });
-  return product;
-}
-
 async function getProductById(id: string) {
   const product = await ProductModel.findById(id);
   return product;
 }
 
-async function createProduct(product: Partial<Product>) {
-  const newProduct = await ProductModel.create(product);
-  await newProduct.save();
-  return newProduct;
+async function getProductBySlug(slug: string) {
+  const product = await ProductModel.findOne({ slug });
+  return product;
 }
 
-async function updateProductBySlug(slug: string, product: Partial<Product>) {
-  const updatedProduct = await ProductModel.findOneAndUpdate({ slug }, product, { new: true });
-  return updatedProduct;
+async function getProducts(options = {}) {
+  const products = await ProductModel.find(options).select('-password').lean();
+  return products;
 }
 
 async function updateProductById(id: string, product: Partial<Product>) {
@@ -71,33 +81,23 @@ async function updateProductById(id: string, product: Partial<Product>) {
   return updatedProduct;
 }
 
-async function deleteProductBySlug(slug: string) {
-  const deletedProduct = await ProductModel.findOneAndDelete({ slug });
-  return deletedProduct;
-}
-
-async function deleteProductById(id: string) {
-  const deletedProduct = await ProductModel.findByIdAndDelete(id);
-  return deletedProduct;
-}
-
-async function countProducts() {
-  const count = await ProductModel.countDocuments();
-  return count;
+async function updateProductBySlug(slug: string, product: Partial<Product>) {
+  const updatedProduct = await ProductModel.findOneAndUpdate({ slug }, product, { new: true });
+  return updatedProduct;
 }
 
 function manageProducts() {
   return {
-    getProducts,
-    getPagenizedProducts,
-    getProductBySlug,
-    getProductById,
-    createProduct,
-    updateProductBySlug,
-    updateProductById,
-    deleteProductBySlug,
-    deleteProductById,
     countProducts,
+    createProduct,
+    deleteProductById,
+    deleteProductBySlug,
+    getPagenizedProducts,
+    getProductById,
+    getProductBySlug,
+    getProducts,
+    updateProductById,
+    updateProductBySlug,
   };
 }
 

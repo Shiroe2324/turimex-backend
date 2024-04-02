@@ -31,9 +31,9 @@ async function deleteUserController(req: Request, res: Response) {
 
     await deleteUserById(userId);
 
-    res.json({ message: 'User removed', data: await cleanUser(user) });
+    res.json({ message: 'User removed', data: cleanUser(user) });
   } catch (error: any) {
-    logger.error(error.message);
+    logger.error(error);
     res.status(500).json({ message: 'Server Error' });
   }
 }

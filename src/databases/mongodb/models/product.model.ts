@@ -1,4 +1,4 @@
-import { Schema, model } from 'mongoose';
+import { model, Schema } from 'mongoose';
 import slugify from 'slugify';
 import logger from '../../../managers/logger.manager';
 import Product from '../interfaces/product.interface';

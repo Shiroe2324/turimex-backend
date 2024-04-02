@@ -56,7 +56,7 @@ async function createProductController(req: Request, res: Response) {
 
     res.status(201).json({ message: 'Product created', data: product });
   } catch (error: any) {
-    logger.error(error.message);
+    logger.error(error);
     res.status(500).json({ message: 'Server Error' });
   }
 }

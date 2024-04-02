@@ -18,7 +18,7 @@ async function getProductsController(req: Request, res: Response) {
       total,
     });
   } catch (error: any) {
-    logger.error(error.message);
+    logger.error(error);
     res.status(500).json({ message: 'Server Error' });
   }
 }

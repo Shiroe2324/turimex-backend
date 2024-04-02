@@ -114,7 +114,7 @@ async function updateProductController(req: Request, res: Response) {
 
     res.json({ message: 'Product updated', data: updatedProduct });
   } catch (error: any) {
-    logger.error(error.message);
+    logger.error(error);
     res.status(500).json({ message: 'Server Error' });
   }
 }

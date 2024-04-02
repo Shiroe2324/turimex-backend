@@ -30,7 +30,10 @@ async function registerController(req: Request, res: Response) {
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const newUser = await createUser({
+      avatar: null,
       email,
+      isAdmin: false,
+      isVerified: false,
       password: hashedPassword,
       username,
     });
@@ -48,10 +51,10 @@ async function registerController(req: Request, res: Response) {
 
     res.status(201).json({
       message: 'User registered successfully',
-      data: await cleanUser(newUser),
+      data: cleanUser(newUser),
     });
   } catch (error: any) {
-    logger.error(error.message);
+    logger.error(error);
     res.status(500).json({ message: 'Server Error' });
   }
 }

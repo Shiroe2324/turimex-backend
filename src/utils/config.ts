@@ -20,6 +20,11 @@ const config = {
   port,
   productionBackendServer: process.env.PRODUCTION_BACKEND_SERVER || `http://localhost:${port}`,
   productionFrontendServer: process.env.PRODUCTION_FRONTEND_SERVER || 'http://localhost:4000',
+  redis: {
+    host: process.env.REDIS_HOST!,
+    password: process.env.REDIS_PASSWORD!,
+    port: Number(process.env.REDIS_PORT!),
+  },
 };
 
 export default config;

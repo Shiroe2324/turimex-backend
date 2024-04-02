@@ -14,6 +14,8 @@
     "cloudinary",
     "fileupload",
     "openapi",
+    "Pagenized",
+    "trivago",
     "Turimex"
   ]
 }

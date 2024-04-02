@@ -45,10 +45,10 @@ async function verifyEmailController(req: Request, res: Response) {
 
     res.json({
       message: 'User verified successfully',
-      data: await cleanUser(user),
+      data: cleanUser(user),
     });
   } catch (error: any) {
-    logger.error(error.message);
+    logger.error(error);
     res.status(500).json({ message: 'Server Error' });
   }
 }

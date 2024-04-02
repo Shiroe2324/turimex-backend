@@ -1,6 +1,6 @@
 import swaggerJSDoc from 'swagger-jsdoc';
-import swaggerModels from './swaggerModels';
 import config from '../../utils/config';
+import swaggerModels from './swaggerModels';
 
 const info: swaggerJSDoc.Information = {
   title: 'Turimex API',

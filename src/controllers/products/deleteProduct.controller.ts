@@ -33,7 +33,7 @@ async function deleteProductController(req: Request, res: Response) {
 
     res.json({ message: 'Product removed', data: product });
   } catch (error: any) {
-    logger.error(error.message);
+    logger.error(error);
     res.status(500).json({ message: 'Server Error' });
   }
 }

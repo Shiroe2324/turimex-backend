@@ -1,7 +1,7 @@
-import mongodbUserManager from '../databases/mongodb/managers/user';
+import redisUserManager from '../databases/redis/managers/user';
 
 function manageUsers() {
-  return { ...mongodbUserManager() };
+  return { ...redisUserManager() };
 }
 
 export default manageUsers;
