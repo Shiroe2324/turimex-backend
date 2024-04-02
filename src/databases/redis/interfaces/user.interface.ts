@@ -9,7 +9,7 @@ interface User extends Entity {
   email: string;
   isAdmin: boolean;
   isVerified: boolean;
-  password: string;
+  password?: string;
   updatedAt: Date;
   userId: string;
   username: string;

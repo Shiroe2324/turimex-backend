@@ -16,7 +16,7 @@ async function generateUserId() {
 }
 
 function cleanUser(user: User) {
-  const userCopy = user as Partial<User>;
+  const userCopy = user;
   delete userCopy.password;
   return userCopy;
 }
@@ -70,7 +70,7 @@ async function getPagenizedUsers(req: Request) {
 
   const users = (await search()
     .sortBy(sortField, sortOrder)
-    .return.page(offset, pageSize)) as Partial<User>[];
+    .return.page(offset, pageSize)) as User[];
 
   users.forEach((user) => {
     delete user.password;
@@ -90,7 +90,7 @@ async function getUserById(userId: string) {
 }
 
 async function getUsers() {
-  const users = (await search().return.all()) as Partial<User>[];
+  const users = (await search().return.all()) as User[];
 
   users.forEach((user) => {
     delete user.password;
@@ -100,7 +100,7 @@ async function getUsers() {
 }
 
 async function getUserWithoutPassword(userId: string) {
-  const user = (await searchById(userId).return.first()) as Partial<User> | null;
+  const user = (await searchById(userId).return.first()) as User | null;
 
   if (user) {
     delete user.password;

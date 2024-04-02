@@ -44,7 +44,7 @@ async function ratingProductController(req: Request, res: Response) {
     }
 
     const comment = req.body.comment || null;
-    product.rating.users.push({ userId: req.user.userId!, rating, comment });
+    product.rating.users.push({ userId: req.user.userId, rating, comment });
 
     const newTotal = ++product.rating.total;
     const totalRatingSum = product.rating.users.reduce(

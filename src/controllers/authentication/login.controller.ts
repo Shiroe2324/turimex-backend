@@ -23,6 +23,10 @@ async function loginController(req: Request, res: Response) {
       return res.status(401).json({ message: 'Authentication failed - User not verified' });
     }
 
+    if (!user.password) {
+      return res.status(500).json({ message: 'Server Error - Password not set' });
+    }
+
     const passwordMatch = await bcrypt.compare(password, user.password);
 
     if (!passwordMatch) {
