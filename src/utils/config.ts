@@ -14,7 +14,7 @@ const config = {
     user: process.env.EMAIL_USER!,
     verificationUrl: process.env.EMAIL_VERIFICATION_URL!,
   },
-  jwt: {
+  jwtSecrets: {
     login: process.env.JWT_SECRET_LOGIN!,
     validation: process.env.JWT_SECRET_VALIDATION!,
   },

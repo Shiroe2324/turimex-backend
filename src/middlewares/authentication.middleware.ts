@@ -7,7 +7,7 @@ interface UserPayload {
   user: string;
 }
 
-const { jwt } = config;
+const { jwtSecrets } = config;
 
 const { getUserWithoutPassword } = manageUsers();
 
@@ -19,7 +19,7 @@ async function authenticate(req: Request, res: Response, next: NextFunction) {
   }
 
   try {
-    const decoded = JWT.verify(token, jwt.login) as UserPayload;
+    const decoded = JWT.verify(token, jwtSecrets.login) as UserPayload;
 
     const user = await getUserWithoutPassword(decoded.user);
 

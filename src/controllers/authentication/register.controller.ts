@@ -6,7 +6,7 @@ import manageUsers from '../../managers/user.manager';
 import config from '../../utils/config';
 import sendVerificationEmail, { isSmtpHostDown } from '../../utils/email';
 
-const { jwt } = config;
+const { jwtSecrets } = config;
 const { cleanUser, createUser, deleteUserByEmail, getUserByEmail } = manageUsers();
 
 async function registerController(req: Request, res: Response) {
@@ -38,7 +38,7 @@ async function registerController(req: Request, res: Response) {
       username,
     });
 
-    const token = JWT.sign({ user: newUser.userId, verification: true }, jwt.validation, {
+    const token = JWT.sign({ user: newUser.userId }, jwtSecrets.validation, {
       expiresIn: '4h',
     });
 

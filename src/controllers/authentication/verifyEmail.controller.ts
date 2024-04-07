@@ -6,10 +6,9 @@ import config from '../../utils/config';
 
 interface VerificationPayload {
   user: string;
-  verification: boolean;
 }
 
-const { jwt } = config;
+const { jwtSecrets } = config;
 const { cleanUser, getUserById, updateUserById } = manageUsers();
 
 async function verifyEmailController(req: Request, res: Response) {
@@ -20,11 +19,7 @@ async function verifyEmailController(req: Request, res: Response) {
       return res.status(400).json({ message: 'Invalid Data - Token is required' });
     }
 
-    const decoded = JWT.verify(token as string, jwt.validation) as VerificationPayload;
-
-    if (!decoded.verification) {
-      return res.status(400).json({ message: 'Invalid Data - Token is not valid' });
-    }
+    const decoded = JWT.verify(token as string, jwtSecrets.validation) as VerificationPayload;
 
     const user = await getUserById(decoded.user);
 

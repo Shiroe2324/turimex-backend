@@ -5,7 +5,7 @@ import logger from '../../managers/logger.manager';
 import manageUsers from '../../managers/user.manager';
 import config from '../../utils/config';
 
-const { jwt } = config;
+const { jwtSecrets } = config;
 const { cleanUser, getUserByEmail } = manageUsers();
 
 async function loginController(req: Request, res: Response) {
@@ -33,7 +33,7 @@ async function loginController(req: Request, res: Response) {
       return res.status(401).json({ message: 'Authentication failed - Invalid credentials' });
     }
 
-    const token = JWT.sign({ user: user.userId }, jwt.login);
+    const token = JWT.sign({ user: user.userId }, jwtSecrets.login);
 
     res.json({ token, data: cleanUser(user) });
   } catch (error: any) {
