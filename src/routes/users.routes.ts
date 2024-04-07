@@ -18,7 +18,7 @@ router.get('/:userId', getUserController);
 
 router.get('/', getUsersValidator, validateFieldsMiddleware, getUsersController);
 
-router.put(
+router.patch(
   '/:userId/avatar',
   authenticationMiddleware,
   updateAvatarValidator,
