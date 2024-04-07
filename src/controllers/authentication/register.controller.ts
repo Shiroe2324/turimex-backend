@@ -1,12 +1,12 @@
 import bcrypt from 'bcrypt';
 import { Request, Response } from 'express';
-import jwt from 'jsonwebtoken';
+import JWT from 'jsonwebtoken';
 import logger from '../../managers/logger.manager';
 import manageUsers from '../../managers/user.manager';
 import config from '../../utils/config';
 import sendVerificationEmail, { isSmtpHostDown } from '../../utils/email';
 
-const { jwtSecret } = config;
+const { jwt } = config;
 const { cleanUser, createUser, deleteUserByEmail, getUserByEmail } = manageUsers();
 
 async function registerController(req: Request, res: Response) {
@@ -38,7 +38,7 @@ async function registerController(req: Request, res: Response) {
       username,
     });
 
-    const token = jwt.sign({ user: newUser.userId, verification: true }, jwtSecret, {
+    const token = JWT.sign({ user: newUser.userId, verification: true }, jwt.validation, {
       expiresIn: '4h',
     });
 

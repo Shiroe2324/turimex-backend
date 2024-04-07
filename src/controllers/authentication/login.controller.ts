@@ -1,11 +1,11 @@
 import bcrypt from 'bcrypt';
 import { Request, Response } from 'express';
-import jwt from 'jsonwebtoken';
+import JWT from 'jsonwebtoken';
 import logger from '../../managers/logger.manager';
 import manageUsers from '../../managers/user.manager';
 import config from '../../utils/config';
 
-const { jwtSecret } = config;
+const { jwt } = config;
 const { cleanUser, getUserByEmail } = manageUsers();
 
 async function loginController(req: Request, res: Response) {
@@ -33,7 +33,7 @@ async function loginController(req: Request, res: Response) {
       return res.status(401).json({ message: 'Authentication failed - Invalid credentials' });
     }
 
-    const token = jwt.sign({ user: user.userId }, jwtSecret);
+    const token = JWT.sign({ user: user.userId }, jwt.login);
 
     res.json({ token, data: cleanUser(user) });
   } catch (error: any) {

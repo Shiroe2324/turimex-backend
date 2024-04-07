@@ -14,7 +14,10 @@ const config = {
     user: process.env.EMAIL_USER!,
     verificationUrl: process.env.EMAIL_VERIFICATION_URL!,
   },
-  jwtSecret: process.env.JWT_SECRET!,
+  jwt: {
+    login: process.env.JWT_SECRET_LOGIN!,
+    validation: process.env.JWT_SECRET_VALIDATION!,
+  },
   mongodbUri: process.env.MONGODB_URI!,
   nodeEnv: process.env.NODE_ENV || 'development',
   port,

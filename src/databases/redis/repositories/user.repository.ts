@@ -30,10 +30,10 @@ const userSchema = new Schema(
     updatedAt: {
       type: 'date',
     },
-    username: {
+    userId: {
       type: 'string',
     },
-    userId: {
+    username: {
       type: 'string',
     },
   },

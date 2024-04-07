@@ -26,7 +26,7 @@ router.post(
   registerController,
 );
 
-router.put(
+router.patch(
   '/verify-email',
   strictLimiterMiddleware,
   verifyEmailValidator,

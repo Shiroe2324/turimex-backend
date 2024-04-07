@@ -1,5 +1,5 @@
 /api/auth/verify-email:
-  put:
+  patch:
     tags:
       - Authentication
     description: Verify user email with the provided token.

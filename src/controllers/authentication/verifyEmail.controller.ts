@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import jwt from 'jsonwebtoken';
+import JWT from 'jsonwebtoken';
 import logger from '../../managers/logger.manager';
 import manageUsers from '../../managers/user.manager';
 import config from '../../utils/config';
@@ -9,7 +9,7 @@ interface VerificationPayload {
   verification: boolean;
 }
 
-const { jwtSecret } = config;
+const { jwt } = config;
 const { cleanUser, getUserById, updateUserById } = manageUsers();
 
 async function verifyEmailController(req: Request, res: Response) {
@@ -20,7 +20,7 @@ async function verifyEmailController(req: Request, res: Response) {
       return res.status(400).json({ message: 'Invalid Data - Token is required' });
     }
 
-    const decoded = jwt.verify(token as string, jwtSecret) as VerificationPayload;
+    const decoded = JWT.verify(token as string, jwt.validation) as VerificationPayload;
 
     if (!decoded.verification) {
       return res.status(400).json({ message: 'Invalid Data - Token is not valid' });

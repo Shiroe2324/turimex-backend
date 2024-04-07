@@ -1,11 +1,13 @@
 import { NextFunction, Request, Response } from 'express';
-import jwt from 'jsonwebtoken';
+import JWT from 'jsonwebtoken';
 import manageUsers from '../managers/user.manager';
 import config from '../utils/config';
 
 interface UserPayload {
   user: string;
 }
+
+const { jwt } = config;
 
 const { getUserWithoutPassword } = manageUsers();
 
@@ -17,7 +19,7 @@ async function authenticate(req: Request, res: Response, next: NextFunction) {
   }
 
   try {
-    const decoded = jwt.verify(token, config.jwtSecret) as UserPayload;
+    const decoded = JWT.verify(token, jwt.login) as UserPayload;
 
     const user = await getUserWithoutPassword(decoded.user);
 
