@@ -47,7 +47,7 @@ async function updateUserController(req: Request, res: Response) {
     }
 
     res.json({ message: 'User updated successfully', data: cleanUser(updatedUser) });
-  } catch (error: any) {
+  } catch (error: unknown) {
     logger.error(error);
     res.status(500).json({ message: 'Server Error' });
   }

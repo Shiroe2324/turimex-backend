@@ -17,7 +17,7 @@ async function getProductsController(req: Request, res: Response) {
       pageSize,
       total,
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
     logger.error(error);
     res.status(500).json({ message: 'Server Error' });
   }

@@ -18,7 +18,7 @@ async function updateProductController(req: Request, res: Response) {
       return res.status(401).json({ message: 'Unauthorized - No token provided' });
     }
 
-    const oldImages: String[] = req.body.oldImages || [];
+    const oldImages: string[] = req.body.oldImages || [];
 
     if (!oldImages.every((image) => typeof image === 'string')) {
       return res
@@ -113,7 +113,7 @@ async function updateProductController(req: Request, res: Response) {
     }
 
     res.json({ message: 'Product updated', data: updatedProduct });
-  } catch (error: any) {
+  } catch (error: unknown) {
     logger.error(error);
     res.status(500).json({ message: 'Server Error' });
   }

@@ -42,7 +42,7 @@ async function verifyEmailController(req: Request, res: Response) {
       message: 'User verified successfully',
       data: cleanUser(user),
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
     logger.error(error);
     res.status(500).json({ message: 'Server Error' });
   }

@@ -36,7 +36,7 @@ async function loginController(req: Request, res: Response) {
     const token = JWT.sign({ user: user.userId }, jwtSecrets.login);
 
     res.json({ token, data: cleanUser(user) });
-  } catch (error: any) {
+  } catch (error: unknown) {
     logger.error(error);
     res.status(500).json({ message: 'Server Error' });
   }

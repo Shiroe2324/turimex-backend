@@ -60,7 +60,7 @@ async function ratingProductController(req: Request, res: Response) {
     await product.save();
 
     res.json({ message: 'Rating added successfully', data: product });
-  } catch (error: any) {
+  } catch (error: unknown) {
     logger.error(error);
     res.status(500).json({ message: 'Server Error' });
   }

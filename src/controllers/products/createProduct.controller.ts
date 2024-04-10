@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import fs from 'fs-extra';
 import manageImages from '../../managers/image.manager';
 import logger from '../../managers/logger.manager';
-import Models from '../../managers/models.manager';
+import * as Models from '../../managers/models.manager';
 import manageProducts from '../../managers/product.manager';
 
 interface Image {
@@ -55,7 +55,7 @@ async function createProductController(req: Request, res: Response) {
     const product = await createProduct(productData);
 
     res.status(201).json({ message: 'Product created', data: product });
-  } catch (error: any) {
+  } catch (error: unknown) {
     logger.error(error);
     res.status(500).json({ message: 'Server Error' });
   }

@@ -12,25 +12,21 @@ function verifyImageFile(file: UploadedFile) {
 }
 
 const validateImageFile: CustomValidator = (_, { req }) => {
-  try {
-    if (!req.files || Object.keys(req.files).length === 0) {
-      throw new Error('No files have been selected.');
-    }
-
-    for (const file of Object.values(req.files)) {
-      const uploadedFile = file as UploadedFile | UploadedFile[];
-
-      if (Array.isArray(uploadedFile)) {
-        uploadedFile.forEach(verifyImageFile);
-      } else {
-        verifyImageFile(uploadedFile);
-      }
-    }
-
-    return true;
-  } catch (error) {
-    throw error;
+  if (!req.files || Object.keys(req.files).length === 0) {
+    throw new Error('No files have been selected.');
   }
+
+  for (const file of Object.values(req.files)) {
+    const uploadedFile = file as UploadedFile | UploadedFile[];
+
+    if (Array.isArray(uploadedFile)) {
+      uploadedFile.forEach(verifyImageFile);
+    } else {
+      verifyImageFile(uploadedFile);
+    }
+  }
+
+  return true;
 };
 
 export default validateImageFile;

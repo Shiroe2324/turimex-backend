@@ -53,7 +53,7 @@ async function registerController(req: Request, res: Response) {
       message: 'User registered successfully',
       data: cleanUser(newUser),
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
     logger.error(error);
     res.status(500).json({ message: 'Server Error' });
   }
