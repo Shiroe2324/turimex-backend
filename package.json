@@ -4,7 +4,7 @@
   "scripts": {
     "build": "tsc",
     "dev": "nodemon",
-    "format": "prettier --write \"src/**/*.ts\" \"src/**/**/*.ts\" --config ./.prettierrc",
+    "format": "prettier --write \"src/**/*.ts\" \"src/**/**/*.ts\" --config ./prettier.config.mjs",
     "lint:fix": "eslint . --fix",
     "lint": "eslint . --max-warnings 0",
     "start": "node build/index.js",
