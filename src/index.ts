@@ -2,10 +2,8 @@ import 'dotenv/config';
 import app from './app';
 import connectDatabases from './managers/connection.manager';
 import logger from './managers/logger.manager';
-import checkEnvVariables from './utils/checkEnvVariables';
 import config from './utils/config';
 
-checkEnvVariables();
 connectDatabases();
 
 app.listen(config.port, () => {
