@@ -1,22 +1,24 @@
-import { Request, Response } from 'express';
+import type { NextFunction, Request, Response } from 'express';
 import logger from '../../managers/logger.manager';
 import manageUsers from '../../managers/user.manager';
+import HttpError from '../../utils/HttpError';
 
 const { getUserWithoutPassword } = manageUsers();
 
-async function getUserController(req: Request, res: Response) {
+async function getUserController(req: Request, res: Response, next: NextFunction) {
   try {
     const { userId } = req.params;
     const user = await getUserWithoutPassword(userId);
 
     if (!user) {
-      return res.status(404).json({ message: 'User not found' });
+      const error = new HttpError(404, 'User not found');
+      return next(error);
     }
 
     res.json({ data: user });
   } catch (error: unknown) {
     logger.error(error);
-    res.status(500).json({ message: 'Server Error' });
+    next();
   }
 }
 

@@ -40,7 +40,7 @@
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ApiError'
+              $ref: '#/components/schemas/HttpError'
       422:
         description: Validation error
         content:
@@ -52,10 +52,10 @@
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ApiError'
+              $ref: '#/components/schemas/HttpError'
       500:
         description: Server error
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ApiError'
+              $ref: '#/components/schemas/HttpError'

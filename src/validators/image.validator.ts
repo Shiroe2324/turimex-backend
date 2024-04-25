@@ -1,5 +1,5 @@
-import { UploadedFile } from 'express-fileupload';
-import { CustomValidator } from 'express-validator';
+import type { UploadedFile } from 'express-fileupload';
+import type { CustomValidator } from 'express-validator';
 
 function verifyImageFile(file: UploadedFile) {
   if (!file.mimetype.startsWith('image/')) {

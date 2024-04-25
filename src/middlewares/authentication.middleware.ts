@@ -1,4 +1,4 @@
-import { NextFunction, Request, Response } from 'express';
+import type { NextFunction, Request, Response } from 'express';
 import JWT from 'jsonwebtoken';
 import manageUsers from '../managers/user.manager';
 import config from '../utils/config';

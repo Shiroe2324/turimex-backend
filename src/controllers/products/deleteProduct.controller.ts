@@ -1,27 +1,29 @@
-import { Request, Response } from 'express';
+import type { NextFunction, Request, Response } from 'express';
 import manageImages from '../../managers/image.manager';
 import logger from '../../managers/logger.manager';
 import manageProducts from '../../managers/product.manager';
+import HttpError from '../../utils/HttpError';
 
 const { deleteImage } = manageImages();
 const { deleteProductBySlug, getProductBySlug } = manageProducts();
 
-async function deleteProductController(req: Request, res: Response) {
+async function deleteProductController(req: Request, res: Response, next: NextFunction) {
   try {
     if (!req.user) {
-      return res.status(401).json({ message: 'Unauthorized - No token provided' });
+      const error = new HttpError(401, 'Unauthorized - No token provided');
+      return next(error);
     }
 
     const product = await getProductBySlug(req.params.slug);
 
     if (!product) {
-      return res.status(404).json({ message: 'Product not found' });
+      const error = new HttpError(404, 'Product not found');
+      return next(error);
     }
 
     if (product.creatorId !== req.user.userId && !req.user.isAdmin) {
-      return res
-        .status(403)
-        .json({ message: 'Access denied - You are not authorized to delete this product' });
+      const error = new HttpError(403, 'Access denied - Not authorized to delete this product');
+      return next(error);
     }
 
     const imageDeletePromises = product.images.map(async (image) => {
@@ -34,7 +36,7 @@ async function deleteProductController(req: Request, res: Response) {
     res.json({ message: 'Product removed', data: product });
   } catch (error: unknown) {
     logger.error(error);
-    res.status(500).json({ message: 'Server Error' });
+    next();
   }
 }
 

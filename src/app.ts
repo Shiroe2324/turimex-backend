@@ -3,6 +3,7 @@ import fileUpload from 'express-fileupload';
 import helmet from 'helmet';
 import swaggerUiExpress from 'swagger-ui-express';
 import corsMiddleware from './middlewares/cors.middleware';
+import errorMiddleware from './middlewares/error.middleware';
 import generalLimiterMiddleware from './middlewares/limiter.middleware';
 import authenticationRoutes from './routes/authentication.routes';
 import productsRoutes from './routes/products.routes';
@@ -22,5 +23,7 @@ app.use('/api-docs', swaggerUiExpress.serve, swaggerUiExpress.setup(swaggerSpec)
 app.use('/api/auth', authenticationRoutes);
 app.use('/api/products', productsRoutes);
 app.use('/api/users', usersRoutes);
+
+app.use(errorMiddleware);
 
 export default app;

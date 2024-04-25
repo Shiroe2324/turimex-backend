@@ -1,5 +1,5 @@
-import { Request } from 'express';
-import Product from '../interfaces/product.interface';
+import type { Request } from 'express';
+import type { Product } from '../interfaces/product.interface';
 import ProductModel from '../models/product.model';
 
 interface ProductFilters {

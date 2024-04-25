@@ -1,8 +1,9 @@
-import { Request, Response } from 'express';
+import type { NextFunction, Request, Response } from 'express';
 import JWT from 'jsonwebtoken';
 import logger from '../../managers/logger.manager';
 import manageUsers from '../../managers/user.manager';
 import config from '../../utils/config';
+import HttpError from '../../utils/HttpError';
 
 interface VerificationPayload {
   user: string;
@@ -11,12 +12,13 @@ interface VerificationPayload {
 const { jwtSecrets } = config;
 const { cleanUser, getUserById, updateUserById } = manageUsers();
 
-async function verifyEmailController(req: Request, res: Response) {
+async function verifyEmailController(req: Request, res: Response, next: NextFunction) {
   try {
     const { token } = req.body;
 
     if (!token) {
-      return res.status(400).json({ message: 'Invalid Data - Token is required' });
+      const error = new HttpError(400, 'Invalid Data - Token is required');
+      return next(error);
     }
 
     const decoded = JWT.verify(token as string, jwtSecrets.validation) as VerificationPayload;
@@ -24,18 +26,21 @@ async function verifyEmailController(req: Request, res: Response) {
     const user = await getUserById(decoded.user);
 
     if (!user) {
-      return res.status(404).json({ message: 'User not found' });
+      const error = new HttpError(404, 'User not found');
+      return next(error);
     }
 
     if (user.isVerified) {
-      return res.status(400).json({ message: 'Invalid Data - User already verified' });
+      const error = new HttpError(400, 'Invalid Data - User already verified');
+      return next(error);
     }
 
     const userToUpdate = { isVerified: true };
     const updatedUser = await updateUserById(user.userId, userToUpdate);
 
     if (!updatedUser) {
-      return res.status(500).json({ message: 'Server Error - User could not be verified' });
+      const error = new HttpError(500, 'Server Error - User could not be verified');
+      return next(error);
     }
 
     res.json({
@@ -44,7 +49,7 @@ async function verifyEmailController(req: Request, res: Response) {
     });
   } catch (error: unknown) {
     logger.error(error);
-    res.status(500).json({ message: 'Server Error' });
+    next();
   }
 }
 

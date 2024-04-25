@@ -1,6 +1,6 @@
-import { Entity } from 'redis-om';
+import type { Entity } from 'redis-om';
 
-interface User extends Entity {
+export interface User extends Entity {
   avatar: {
     public_id: string;
     url: string;
@@ -14,5 +14,3 @@ interface User extends Entity {
   userId: string;
   username: string;
 }
-
-export default User;

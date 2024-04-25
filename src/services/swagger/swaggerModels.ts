@@ -1,4 +1,4 @@
-import ApiError from './models/ApiError';
+import HttpError from './models/HttpError';
 import Image from './models/Image';
 import Product from './models/Product';
 import RatingProduct from './models/RatingProduct';
@@ -7,12 +7,12 @@ import User from './models/User';
 import ValidationError from './models/ValidationError';
 
 const swaggerModels = {
-  Product,
-  User,
+  HttpError,
   Image,
+  Product,
   RatingProduct,
   RatingUser,
-  ApiError,
+  User,
   ValidationError,
 };
 

@@ -1,18 +1,20 @@
 import bcrypt from 'bcrypt';
-import { Request, Response } from 'express';
+import type { NextFunction, Request, Response } from 'express';
 import JWT from 'jsonwebtoken';
 import logger from '../../managers/logger.manager';
 import manageUsers from '../../managers/user.manager';
 import config from '../../utils/config';
 import sendVerificationEmail, { isSmtpHostDown } from '../../utils/email';
+import HttpError from '../../utils/HttpError';
 
 const { jwtSecrets } = config;
 const { cleanUser, createUser, deleteUserByEmail, getUserByEmail } = manageUsers();
 
-async function registerController(req: Request, res: Response) {
+async function registerController(req: Request, res: Response, next: NextFunction) {
   try {
     if (isSmtpHostDown()) {
-      return res.status(500).json({ message: 'Server Error - Email service is down' });
+      const error = new HttpError(500, 'Server Error - Email service is down');
+      return next(error);
     }
 
     const email = (req.body.email as string).trim();
@@ -22,9 +24,8 @@ async function registerController(req: Request, res: Response) {
     const existingUser = await getUserByEmail(email);
 
     if (existingUser) {
-      return res.status(400).json({
-        message: 'Invalid data - User with this email already exists',
-      });
+      const error = new HttpError(400, 'Invalid data - User with this email already exists');
+      return next(error);
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -46,7 +47,8 @@ async function registerController(req: Request, res: Response) {
 
     if (!mail.accepted.length) {
       await deleteUserByEmail(email);
-      return res.status(500).json({ message: 'Server Error - Email not sent' });
+      const error = new HttpError(500, 'Server Error - Email not sent');
+      return next(error);
     }
 
     res.status(201).json({
@@ -55,7 +57,7 @@ async function registerController(req: Request, res: Response) {
     });
   } catch (error: unknown) {
     logger.error(error);
-    res.status(500).json({ message: 'Server Error' });
+    next();
   }
 }
 

@@ -1,8 +1,9 @@
-import { Request, Response } from 'express';
+import type { NextFunction, Request, Response } from 'express';
 import fs from 'fs-extra';
 import manageImages from '../../managers/image.manager';
 import logger from '../../managers/logger.manager';
 import manageProducts from '../../managers/product.manager';
+import HttpError from '../../utils/HttpError';
 
 interface Image {
   url: string;
@@ -12,30 +13,30 @@ interface Image {
 const { deleteImage, uploadImage } = manageImages();
 const { getProductBySlug, updateProductBySlug } = manageProducts();
 
-async function updateProductController(req: Request, res: Response) {
+async function updateProductController(req: Request, res: Response, next: NextFunction) {
   try {
     if (!req.user) {
-      return res.status(401).json({ message: 'Unauthorized - No token provided' });
+      const error = new HttpError(401, 'Unauthorized - No token provided');
+      return next(error);
     }
 
     const oldImages: string[] = req.body.oldImages || [];
 
     if (!oldImages.every((image) => typeof image === 'string')) {
-      return res
-        .status(400)
-        .json({ message: 'Invalid data - Old images must be an array of strings' });
+      const error = new HttpError(400, 'Invalid data - Old images must be an array of strings');
+      return next(error);
     }
 
     const product = await getProductBySlug(req.params.slug);
 
     if (!product) {
-      return res.status(404).json({ message: 'Product not found' });
+      const error = new HttpError(404, 'Product not found');
+      return next(error);
     }
 
     if (product.creatorId !== req.user.userId && !req.user.isAdmin) {
-      return res
-        .status(403)
-        .json({ message: 'Access denied - You are not authorized to update this product' });
+      const error = new HttpError(403, 'Access denied - Not authorized to update this product');
+      return next(error);
     }
 
     if (
@@ -48,17 +49,15 @@ async function updateProductController(req: Request, res: Response) {
       !req.body.price &&
       !req.files
     ) {
-      return res
-        .status(400)
-        .json({ message: 'Invalid data - You must provide at least one field to update' });
+      const error = new HttpError(400, 'Invalid data - Must provide at least one field to update');
+      return next(error);
     }
 
     const images = product.images.filter((image) => oldImages.includes(image.public_id));
 
     if (!images.length && (!req.files || !Object.keys(req.files).length)) {
-      return res
-        .status(400)
-        .json({ message: 'Invalid data - You must provide at least one image' });
+      const error = new HttpError(400, 'Invalid data - Must provide at least one image');
+      return next(error);
     }
 
     let imageUrls: Image[] = [];
@@ -109,13 +108,14 @@ async function updateProductController(req: Request, res: Response) {
     const updatedProduct = await updateProductBySlug(req.params.slug, productToUpdate);
 
     if (!updatedProduct) {
-      return res.status(500).json({ message: 'Server Error - Product could not be updated' });
+      const error = new HttpError(500, 'Server Error - Product could not be updated');
+      return next(error);
     }
 
     res.json({ message: 'Product updated', data: updatedProduct });
   } catch (error: unknown) {
     logger.error(error);
-    res.status(500).json({ message: 'Server Error' });
+    next();
   }
 }
 

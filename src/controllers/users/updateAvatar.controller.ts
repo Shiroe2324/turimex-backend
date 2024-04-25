@@ -1,16 +1,18 @@
-import { Request, Response } from 'express';
+import type { NextFunction, Request, Response } from 'express';
 import fs from 'fs-extra';
 import manageImages from '../../managers/image.manager';
 import logger from '../../managers/logger.manager';
 import manageUsers from '../../managers/user.manager';
+import HttpError from '../../utils/HttpError';
 
 const { cleanUser, getUserById, updateUserById } = manageUsers();
 const { uploadImage, deleteImage } = manageImages();
 
-async function updateAvatarController(req: Request, res: Response) {
+async function updateAvatarController(req: Request, res: Response, next: NextFunction) {
   try {
     if (!req.user) {
-      return res.status(401).json({ message: 'Unauthorized - No token provided' });
+      const error = new HttpError(401, 'Unauthorized - No token provided');
+      return next(error);
     }
 
     const { userId } = req.params;
@@ -18,23 +20,25 @@ async function updateAvatarController(req: Request, res: Response) {
     const user = await getUserById(userId);
 
     if (!user) {
-      return res.status(404).json({ message: 'User not found' });
+      const error = new HttpError(404, 'User not found');
+      return next(error);
     }
 
     if (user.userId !== req.user.userId && !req.user.isAdmin) {
-      return res
-        .status(403)
-        .json({ message: 'Access denied - You are not authorized to update this avatar' });
+      const error = new HttpError(403, 'Access denied - Not authorized to update this avatar');
+      return next(error);
     }
 
     if (!req.files || Object.keys(req.files).length === 0) {
-      return res.status(400).json({ message: 'Invalid data - No files have been selected.' });
+      const error = new HttpError(400, 'Invalid data - No files have been selected.');
+      return next(error);
     }
 
     const avatar = Object.values(req.files)[0];
 
     if (Array.isArray(avatar)) {
-      return res.status(400).json({ message: 'Invalid data - Only one file is allowed' });
+      const error = new HttpError(400, 'Invalid data - Only one file is allowed');
+      return next(error);
     }
 
     if (user.avatar) {
@@ -53,13 +57,14 @@ async function updateAvatarController(req: Request, res: Response) {
     const updatedUser = await updateUserById(userId, userToUpdate);
 
     if (!updatedUser) {
-      return res.status(500).json({ message: 'Server Error - Avatar could not be updated' });
+      const error = new HttpError(500, 'Server Error - Avatar could not be updated');
+      return next(error);
     }
 
     res.json({ message: 'Avatar updated successfully', data: cleanUser(updatedUser) });
   } catch (error: unknown) {
     logger.error(error);
-    res.status(500).json({ message: 'Server Error' });
+    next();
   }
 }
 

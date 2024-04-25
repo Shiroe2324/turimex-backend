@@ -1,7 +1,7 @@
 import { model, Schema } from 'mongoose';
 import slugify from 'slugify';
 import logger from '../../../managers/logger.manager';
-import Product from '../interfaces/product.interface';
+import type { Product } from '../interfaces/product.interface';
 import Counter from './counter.model';
 
 const productSchema = new Schema<Product>(

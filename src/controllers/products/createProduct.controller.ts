@@ -1,9 +1,10 @@
-import { Request, Response } from 'express';
+import type { NextFunction, Request, Response } from 'express';
 import fs from 'fs-extra';
 import manageImages from '../../managers/image.manager';
 import logger from '../../managers/logger.manager';
 import * as Models from '../../managers/models.manager';
 import manageProducts from '../../managers/product.manager';
+import HttpError from '../../utils/HttpError';
 
 interface Image {
   url: string;
@@ -13,14 +14,16 @@ interface Image {
 const { uploadImage } = manageImages();
 const { createProduct } = manageProducts();
 
-async function createProductController(req: Request, res: Response) {
+async function createProductController(req: Request, res: Response, next: NextFunction) {
   try {
     if (!req.user) {
-      return res.status(401).json({ message: 'Unauthorized - No token provided' });
+      const error = new HttpError(401, 'Unauthorized - No token provided');
+      return next(error);
     }
 
     if (!req.files || Object.keys(req.files).length === 0) {
-      return res.status(400).json({ message: 'Invalid data - No files have been selected.' });
+      const error = new HttpError(400, 'Invalid data - No files have been selected.');
+      return next(error);
     }
 
     let imageUrls: Image[] = [];
@@ -57,7 +60,7 @@ async function createProductController(req: Request, res: Response) {
     res.status(201).json({ message: 'Product created', data: product });
   } catch (error: unknown) {
     logger.error(error);
-    res.status(500).json({ message: 'Server Error' });
+    next();
   }
 }
 

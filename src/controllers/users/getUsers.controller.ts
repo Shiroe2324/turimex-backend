@@ -1,10 +1,10 @@
-import { Request, Response } from 'express';
+import type { NextFunction, Request, Response } from 'express';
 import logger from '../../managers/logger.manager';
 import manageUsers from '../../managers/user.manager';
 
 const { countUsers, getPagenizedUsers } = manageUsers();
 
-async function getUsersController(req: Request, res: Response) {
+async function getUsersController(req: Request, res: Response, next: NextFunction) {
   try {
     const users = await getPagenizedUsers(req);
     const total = await countUsers();
@@ -19,7 +19,7 @@ async function getUsersController(req: Request, res: Response) {
     });
   } catch (error: unknown) {
     logger.error(error);
-    res.status(500).json({ message: 'Server Error' });
+    next();
   }
 }
 

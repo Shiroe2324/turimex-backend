@@ -1,7 +1,7 @@
-import { Request } from 'express';
+import type { Request } from 'express';
 import { EntityId } from 'redis-om';
 import { getRedisClient } from '../connection';
-import User from '../interfaces/user.interface';
+import type { User } from '../interfaces/user.interface';
 import getUserRepository from '../repositories/user.repository';
 
 const search = () => getUserRepository().search();

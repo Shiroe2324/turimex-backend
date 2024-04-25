@@ -1,14 +1,15 @@
 import bcrypt from 'bcrypt';
-import { Request, Response } from 'express';
+import type { NextFunction, Request, Response } from 'express';
 import JWT from 'jsonwebtoken';
 import logger from '../../managers/logger.manager';
 import manageUsers from '../../managers/user.manager';
 import config from '../../utils/config';
+import HttpError from '../../utils/HttpError';
 
 const { jwtSecrets } = config;
 const { cleanUser, getUserByEmail } = manageUsers();
 
-async function loginController(req: Request, res: Response) {
+async function loginController(req: Request, res: Response, next: NextFunction) {
   try {
     const email = req.body.email as string;
     const password = req.body.password as string;
@@ -16,21 +17,25 @@ async function loginController(req: Request, res: Response) {
     const user = await getUserByEmail(email);
 
     if (!user) {
-      return res.status(401).json({ message: 'Authentication failed - Invalid credentials' });
+      const error = new HttpError(401, 'Authentication failed - Invalid credentials');
+      return next(error);
     }
 
     if (!user.isVerified) {
-      return res.status(401).json({ message: 'Authentication failed - User not verified' });
+      const error = new HttpError(401, 'Authentication failed - User not verified');
+      return next(error);
     }
 
     if (!user.password) {
-      return res.status(500).json({ message: 'Server Error - Password not set' });
+      const error = new HttpError(500, 'Server Error - Password not set');
+      return next(error);
     }
 
     const passwordMatch = await bcrypt.compare(password, user.password);
 
     if (!passwordMatch) {
-      return res.status(401).json({ message: 'Authentication failed - Invalid credentials' });
+      const error = new HttpError(401, 'Authentication failed - Invalid credentials');
+      return next(error);
     }
 
     const token = JWT.sign({ user: user.userId }, jwtSecrets.login);
@@ -38,7 +43,7 @@ async function loginController(req: Request, res: Response) {
     res.json({ token, data: cleanUser(user) });
   } catch (error: unknown) {
     logger.error(error);
-    res.status(500).json({ message: 'Server Error' });
+    next();
   }
 }
 

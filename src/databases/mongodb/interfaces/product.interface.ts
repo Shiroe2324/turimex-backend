@@ -17,7 +17,7 @@ interface Rating {
   users: RatingUser[];
 }
 
-interface Product extends Document {
+export interface Product extends Document {
   brand: string;
   category: string;
   countInStock: number;
@@ -29,5 +29,3 @@ interface Product extends Document {
   rating: Rating | null;
   slug: string;
 }
-
-export default Product;

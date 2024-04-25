@@ -1,31 +1,34 @@
 import bcrypt from 'bcrypt';
-import { Request, Response } from 'express';
+import type { NextFunction, Request, Response } from 'express';
 import logger from '../../managers/logger.manager';
 import manageUsers from '../../managers/user.manager';
+import HttpError from '../../utils/HttpError';
 
 const { cleanUser, getUserById, updateUserById } = manageUsers();
 
-async function updateUserController(req: Request, res: Response) {
+async function updateUserController(req: Request, res: Response, next: NextFunction) {
   try {
     if (!req.user) {
-      return res.status(401).json({ message: 'Unauthorized - No token provided' });
+      const error = new HttpError(401, 'Unauthorized - No token provided');
+      return next(error);
     }
 
     const { userId } = req.params;
     const user = await getUserById(userId);
 
     if (!user) {
-      return res.status(404).json({ message: 'User not found' });
+      const error = new HttpError(404, 'User not found');
+      return next(error);
     }
 
     if (user.userId !== req.user.userId && !req.user.isAdmin) {
-      return res
-        .status(403)
-        .json({ message: 'Access denied - You are not authorized to update this user' });
+      const error = new HttpError(403, 'Access denied - Not authorized to update this user');
+      return next(error);
     }
 
     if (!req.body.password && !req.body.username) {
-      return res.status(400).json({ message: 'Invalid data - Password or username is required' });
+      const error = new HttpError(400, 'Invalid data - Password or username is required');
+      return next(error);
     }
 
     let password = user.password;
@@ -43,13 +46,14 @@ async function updateUserController(req: Request, res: Response) {
     const updatedUser = await updateUserById(userId, userToUpdate);
 
     if (!updatedUser) {
-      return res.status(500).json({ message: 'Server Error - User could not be updated' });
+      const error = new HttpError(500, 'Server Error - User could not be updated');
+      return next(error);
     }
 
     res.json({ message: 'User updated successfully', data: cleanUser(updatedUser) });
   } catch (error: unknown) {
     logger.error(error);
-    res.status(500).json({ message: 'Server Error' });
+    next();
   }
 }
 

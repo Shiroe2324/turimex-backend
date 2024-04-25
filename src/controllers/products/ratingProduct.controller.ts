@@ -1,29 +1,34 @@
-import { Request, Response } from 'express';
+import type { NextFunction, Request, Response } from 'express';
 import logger from '../../managers/logger.manager';
 import manageProducts from '../../managers/product.manager';
+import HttpError from '../../utils/HttpError';
 
 const { getProductBySlug } = manageProducts();
 
-async function ratingProductController(req: Request, res: Response) {
+async function ratingProductController(req: Request, res: Response, next: NextFunction) {
   try {
     if (!req.user) {
-      return res.status(401).json({ message: 'Unauthorized - No token provided' });
+      const error = new HttpError(401, 'Unauthorized - No token provided');
+      return next(error);
     }
 
     const product = await getProductBySlug(req.params.slug);
 
     if (!product) {
-      return res.status(404).json({ message: 'Product not found' });
+      const error = new HttpError(404, 'Product not found');
+      return next(error);
     }
 
     if (product.creatorId === req.user.userId) {
-      return res.status(403).json({ message: 'Access denied - You cannot rate your own product' });
+      const error = new HttpError(403, 'Access denied - Cannot rate your own product');
+      return next(error);
     }
 
     const rating = parseInt(req.body.rating);
 
     if (isNaN(rating)) {
-      return res.status(400).json({ message: 'Invalid data - Rating must be a number' });
+      const error = new HttpError(400, 'Invalid data - Rating must be a number');
+      return next(error);
     }
 
     if (!product.rating) {
@@ -62,7 +67,7 @@ async function ratingProductController(req: Request, res: Response) {
     res.json({ message: 'Rating added successfully', data: product });
   } catch (error: unknown) {
     logger.error(error);
-    res.status(500).json({ message: 'Server Error' });
+    next();
   }
 }
 
