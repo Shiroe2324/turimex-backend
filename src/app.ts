@@ -23,6 +23,7 @@ app.use('/api-docs', swaggerUiExpress.serve, swaggerUiExpress.setup(swaggerSpec)
 app.use('/api/auth', authenticationRoutes);
 app.use('/api/products', productsRoutes);
 app.use('/api/users', usersRoutes);
+app.use('/', (_req, res) => res.send('Hello World!'));
 
 app.use(errorMiddleware);
 

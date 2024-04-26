@@ -1,7 +1,7 @@
-import type { Request, Response } from 'express';
+import type { NextFunction, Request, Response } from 'express';
 import HttpError from '../utils/HttpError';
 
-async function errorMiddleware(error: unknown, _req: Request, res: Response) {
+async function errorMiddleware(error: unknown, _req: Request, res: Response, _next: NextFunction) {
   if (error instanceof HttpError) {
     return res.status(error.status).json({
       status: 'error',
@@ -10,7 +10,7 @@ async function errorMiddleware(error: unknown, _req: Request, res: Response) {
     });
   }
 
-  res.status(500).json({
+  return res.status(500).json({
     status: 'error',
     statusCode: 500,
     message: 'Internal Server Error',
