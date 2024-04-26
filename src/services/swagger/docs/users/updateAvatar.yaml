@@ -45,25 +45,25 @@
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/ApiError"
+              $ref: "#/components/schemas/HttpError"
       401:
         description: Unauthorized
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/ApiError"
+              $ref: "#/components/schemas/HttpError"
       403:
         description: Access denied
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/ApiError"
+              $ref: "#/components/schemas/HttpError"
       404:
         description: User not found
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/ApiError"
+              $ref: "#/components/schemas/HttpError"
       422:
         description: Validation error
         content:
@@ -75,10 +75,10 @@
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/ApiError"
+              $ref: "#/components/schemas/HttpError"
       500:
         description: Server error
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/ApiError"
+              $ref: "#/components/schemas/HttpError"

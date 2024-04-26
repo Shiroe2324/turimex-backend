@@ -1,11 +1,11 @@
 import type { NextFunction, Request, Response } from 'express';
 import manageImages from '../../managers/image.manager';
 import logger from '../../managers/logger.manager';
-import manageProducts from '../../managers/product.manager';
+import productManager from '../../managers/product.manager';
 import HttpError from '../../utils/HttpError';
 
 const { deleteImage } = manageImages();
-const { deleteProductBySlug, getProductBySlug } = manageProducts();
+const { deleteProductBySlug, getProductBySlug } = productManager();
 
 async function deleteProductController(req: Request, res: Response, next: NextFunction) {
   try {
@@ -14,7 +14,7 @@ async function deleteProductController(req: Request, res: Response, next: NextFu
       return next(error);
     }
 
-    const product = await getProductBySlug(req.params.slug);
+    const product = await getProductBySlug(req.params['slug']);
 
     if (!product) {
       const error = new HttpError(404, 'Product not found');
@@ -31,7 +31,7 @@ async function deleteProductController(req: Request, res: Response, next: NextFu
     });
 
     await Promise.all(imageDeletePromises);
-    await deleteProductBySlug(req.params.slug);
+    await deleteProductBySlug(req.params['slug']);
 
     res.json({ message: 'Product removed', data: product });
   } catch (error: unknown) {

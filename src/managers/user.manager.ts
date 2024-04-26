@@ -1,7 +1,7 @@
 import redisUserManager from '../databases/redis/managers/user';
 
-function manageUsers() {
+function userManager() {
   return { ...redisUserManager() };
 }
 
-export default manageUsers;
+export default userManager;

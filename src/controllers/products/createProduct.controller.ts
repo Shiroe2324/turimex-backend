@@ -3,7 +3,7 @@ import fs from 'fs-extra';
 import manageImages from '../../managers/image.manager';
 import logger from '../../managers/logger.manager';
 import * as Models from '../../managers/models.manager';
-import manageProducts from '../../managers/product.manager';
+import productManager from '../../managers/product.manager';
 import HttpError from '../../utils/HttpError';
 
 interface Image {
@@ -12,7 +12,7 @@ interface Image {
 }
 
 const { uploadImage } = manageImages();
-const { createProduct } = manageProducts();
+const { createProduct } = productManager();
 
 async function createProductController(req: Request, res: Response, next: NextFunction) {
   try {

@@ -2,12 +2,12 @@ import bcrypt from 'bcrypt';
 import type { NextFunction, Request, Response } from 'express';
 import JWT from 'jsonwebtoken';
 import logger from '../../managers/logger.manager';
-import manageUsers from '../../managers/user.manager';
+import userManager from '../../managers/user.manager';
 import config from '../../utils/config';
 import HttpError from '../../utils/HttpError';
 
 const { jwtSecrets } = config;
-const { cleanUser, getUserByEmail } = manageUsers();
+const { cleanUser, getUserByEmail } = userManager();
 
 async function loginController(req: Request, res: Response, next: NextFunction) {
   try {

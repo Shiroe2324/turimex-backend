@@ -59,11 +59,11 @@ async function deleteUserById(userId: string) {
 }
 
 async function getPagenizedUsers(req: Request) {
-  const page = (parseInt(req.query.page as string) || 1) - 1;
-  const pageSize = parseInt(req.query.pageSize as string) || 10;
+  const page = (parseInt(req.query['page'] as string) || 1) - 1;
+  const pageSize = parseInt(req.query['pageSize'] as string) || 10;
   const offset = page === 0 ? 0 : page * pageSize - 1;
 
-  const sort = (req.query.sort as string) || 'createdAt:desc';
+  const sort = (req.query['sort'] as string) || 'createdAt:desc';
   const sortParams = sort.split(':');
   const sortField = sortParams[0];
   const sortOrder = sortParams[1] === 'asc' ? 'ASC' : 'DESC';

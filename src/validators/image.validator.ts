@@ -12,11 +12,11 @@ function verifyImageFile(file: UploadedFile) {
 }
 
 const validateImageFile: CustomValidator = (_, { req }) => {
-  if (!req.files || Object.keys(req.files).length === 0) {
+  if (!req['files'] || Object.keys(req['files']).length === 0) {
     throw new Error('No files have been selected.');
   }
 
-  for (const file of Object.values(req.files)) {
+  for (const file of Object.values(req['files'])) {
     const uploadedFile = file as UploadedFile | UploadedFile[];
 
     if (Array.isArray(uploadedFile)) {

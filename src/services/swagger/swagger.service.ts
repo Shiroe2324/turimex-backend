@@ -2,20 +2,22 @@ import swaggerJSDoc from 'swagger-jsdoc';
 import config from '../../utils/config';
 import swaggerModels from './swaggerModels';
 
+const { productionFrontendServer, port, version } = config;
+
 const info: swaggerJSDoc.Information = {
   title: 'Turimex API',
   description: 'All the information about the **API** backend for the `Turimex` program',
-  version: 'v0.0.1',
+  version: `v${version}`,
 };
 
 const servers: swaggerJSDoc.Server[] = [
   {
-    url: config.productionBackendServer,
-    description: 'Production server',
+    url: `http://localhost:${port}`,
+    description: 'Development server',
   },
   {
-    url: `http://localhost:${config.port}`,
-    description: 'Development server',
+    url: productionFrontendServer,
+    description: 'Production server',
   },
 ];
 

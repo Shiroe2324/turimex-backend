@@ -1,11 +1,11 @@
 import type { NextFunction, Request, Response } from 'express';
 import manageImages from '../../managers/image.manager';
 import logger from '../../managers/logger.manager';
-import manageUsers from '../../managers/user.manager';
+import userManager from '../../managers/user.manager';
 import HttpError from '../../utils/HttpError';
 
 const { deleteImage } = manageImages();
-const { cleanUser, deleteUserById, getUserById } = manageUsers();
+const { cleanUser, deleteUserById, getUserById } = userManager();
 
 async function deleteUserController(req: Request, res: Response, next: NextFunction) {
   try {

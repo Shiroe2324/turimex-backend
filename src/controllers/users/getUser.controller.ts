@@ -1,9 +1,9 @@
 import type { NextFunction, Request, Response } from 'express';
 import logger from '../../managers/logger.manager';
-import manageUsers from '../../managers/user.manager';
+import userManager from '../../managers/user.manager';
 import HttpError from '../../utils/HttpError';
 
-const { getUserWithoutPassword } = manageUsers();
+const { getUserWithoutPassword } = userManager();
 
 async function getUserController(req: Request, res: Response, next: NextFunction) {
   try {

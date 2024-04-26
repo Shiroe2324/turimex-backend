@@ -1,9 +1,9 @@
 import type { NextFunction, Request, Response } from 'express';
 import logger from '../../managers/logger.manager';
-import manageProducts from '../../managers/product.manager';
+import productManager from '../../managers/product.manager';
 import HttpError from '../../utils/HttpError';
 
-const { getProductBySlug } = manageProducts();
+const { getProductBySlug } = productManager();
 
 async function ratingProductController(req: Request, res: Response, next: NextFunction) {
   try {
@@ -12,7 +12,7 @@ async function ratingProductController(req: Request, res: Response, next: NextFu
       return next(error);
     }
 
-    const product = await getProductBySlug(req.params.slug);
+    const product = await getProductBySlug(req.params['slug']);
 
     if (!product) {
       const error = new HttpError(404, 'Product not found');

@@ -1,7 +1,7 @@
 import mongodbProductManager from '../databases/mongodb/managers/product';
 
-function manageProducts() {
+function productManager() {
   return { ...mongodbProductManager() };
 }
 
-export default manageProducts;
+export default productManager;

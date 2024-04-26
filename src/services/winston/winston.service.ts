@@ -23,7 +23,7 @@ const customLevels = {
   warn: 1,
   info: 2,
   http: 3,
-  debug: process.env.NODE_ENV === 'development' ? 4 : 2,
+  debug: process.env['NODE_ENV'] === 'development' ? 4 : 2,
 };
 
 const winstonService = winston.createLogger({

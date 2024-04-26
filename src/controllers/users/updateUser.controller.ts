@@ -1,10 +1,10 @@
 import bcrypt from 'bcrypt';
 import type { NextFunction, Request, Response } from 'express';
 import logger from '../../managers/logger.manager';
-import manageUsers from '../../managers/user.manager';
+import userManager from '../../managers/user.manager';
 import HttpError from '../../utils/HttpError';
 
-const { cleanUser, getUserById, updateUserById } = manageUsers();
+const { cleanUser, getUserById, updateUserById } = userManager();
 
 async function updateUserController(req: Request, res: Response, next: NextFunction) {
   try {

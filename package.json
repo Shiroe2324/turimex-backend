@@ -3,12 +3,11 @@
   "version": "0.0.1",
   "scripts": {
     "build": "tsc",
-    "dev": "nodemon",
+    "dev": "bun --watch src/index.ts",
     "format": "prettier --write \"src/**/*.ts\" \"src/**/**/*.ts\" --config ./prettier.config.mjs",
     "lint:fix": "eslint . --fix",
     "lint": "eslint . --max-warnings 0",
-    "start": "node build/index.js",
-    "test": "ts-node src/index.ts"
+    "start": "bun src/index.ts"
   },
   "dependencies": {
     "bcrypt": "^5.1.1",

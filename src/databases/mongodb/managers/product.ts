@@ -30,26 +30,26 @@ async function deleteProductBySlug(slug: string) {
 }
 
 async function getPagenizedProducts(req: Request) {
-  const page = parseInt(req.query.page as string) || 1;
-  const pageSize = parseInt(req.query.pageSize as string) || 10;
+  const page = parseInt(req.query['page'] as string) || 1;
+  const pageSize = parseInt(req.query['pageSize'] as string) || 10;
 
-  const sort = (req.query.sort as string) || 'createdAt:desc';
+  const sort = (req.query['sort'] as string) || 'createdAt:desc';
   const sortParams = sort.split(':');
   const sortField = sortParams[0];
   const sortOrder = sortParams[1] === 'asc' ? 1 : -1;
 
   const filters: ProductFilters = {};
 
-  if (req.query.brand) {
-    filters.brand = req.query.brand as string;
+  if (req.query['brand']) {
+    filters.brand = req.query['brand'] as string;
   }
 
-  if (req.query.category) {
-    filters.category = req.query.category as string;
+  if (req.query['category']) {
+    filters.category = req.query['category'] as string;
   }
 
-  if (req.query.creator) {
-    filters.creator = req.query.creator as string;
+  if (req.query['creator']) {
+    filters.creator = req.query['creator'] as string;
   }
 
   const products = await ProductModel.find(filters)

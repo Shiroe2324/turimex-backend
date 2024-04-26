@@ -2,13 +2,13 @@ import bcrypt from 'bcrypt';
 import type { NextFunction, Request, Response } from 'express';
 import JWT from 'jsonwebtoken';
 import logger from '../../managers/logger.manager';
-import manageUsers from '../../managers/user.manager';
+import userManager from '../../managers/user.manager';
 import config from '../../utils/config';
 import sendVerificationEmail, { isSmtpHostDown } from '../../utils/email';
 import HttpError from '../../utils/HttpError';
 
 const { jwtSecrets } = config;
-const { cleanUser, createUser, deleteUserByEmail, getUserByEmail } = manageUsers();
+const { cleanUser, createUser, deleteUserByEmail, getUserByEmail } = userManager();
 
 async function registerController(req: Request, res: Response, next: NextFunction) {
   try {

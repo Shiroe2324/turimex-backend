@@ -2,7 +2,7 @@ import type { NextFunction, Request, Response } from 'express';
 import fs from 'fs-extra';
 import manageImages from '../../managers/image.manager';
 import logger from '../../managers/logger.manager';
-import manageProducts from '../../managers/product.manager';
+import productManager from '../../managers/product.manager';
 import HttpError from '../../utils/HttpError';
 
 interface Image {
@@ -11,7 +11,7 @@ interface Image {
 }
 
 const { deleteImage, uploadImage } = manageImages();
-const { getProductBySlug, updateProductBySlug } = manageProducts();
+const { getProductBySlug, updateProductBySlug } = productManager();
 
 async function updateProductController(req: Request, res: Response, next: NextFunction) {
   try {
@@ -27,7 +27,7 @@ async function updateProductController(req: Request, res: Response, next: NextFu
       return next(error);
     }
 
-    const product = await getProductBySlug(req.params.slug);
+    const product = await getProductBySlug(req.params['slug']);
 
     if (!product) {
       const error = new HttpError(404, 'Product not found');
@@ -105,7 +105,7 @@ async function updateProductController(req: Request, res: Response, next: NextFu
       price,
     };
 
-    const updatedProduct = await updateProductBySlug(req.params.slug, productToUpdate);
+    const updatedProduct = await updateProductBySlug(req.params['slug'], productToUpdate);
 
     if (!updatedProduct) {
       const error = new HttpError(500, 'Server Error - Product could not be updated');

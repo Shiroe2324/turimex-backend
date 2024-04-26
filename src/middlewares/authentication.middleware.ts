@@ -1,21 +1,23 @@
 import type { NextFunction, Request, Response } from 'express';
 import JWT from 'jsonwebtoken';
-import manageUsers from '../managers/user.manager';
+import userManager from '../managers/user.manager';
 import config from '../utils/config';
+import HttpError from '../utils/HttpError';
+import errorMiddleware from './error.middleware';
 
 interface UserPayload {
   user: string;
 }
 
 const { jwtSecrets } = config;
+const { getUserWithoutPassword } = userManager();
 
-const { getUserWithoutPassword } = manageUsers();
-
-async function authenticate(req: Request, res: Response, next: NextFunction) {
+async function authenticationMiddleware(req: Request, res: Response, next: NextFunction) {
   const token = req.header('Authorization')?.split(' ')[1];
 
   if (!token) {
-    return res.status(401).json({ message: 'Unauthorized - No token provided' });
+    const error = new HttpError(401, 'Unauthorized - No token provided');
+    return errorMiddleware(error, req, res);
   }
 
   try {
@@ -24,15 +26,17 @@ async function authenticate(req: Request, res: Response, next: NextFunction) {
     const user = await getUserWithoutPassword(decoded.user);
 
     if (!user) {
-      return res.status(401).json({ message: 'Unauthorized - Invalid token' });
+      const error = new HttpError(401, 'Unauthorized - Invalid token');
+      return errorMiddleware(error, req, res);
     }
 
     req.user = user;
 
     next();
   } catch (error) {
-    return res.status(401).json({ message: 'Unauthorized - Invalid token' });
+    const err = new HttpError(401, 'Unauthorized - Invalid token');
+    return errorMiddleware(err, req, res);
   }
 }
 
-export default authenticate;
+export default authenticationMiddleware;
