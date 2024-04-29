@@ -1,17 +1,11 @@
 import type { NextFunction, Request, Response } from 'express';
-import fs from 'fs-extra';
-import manageImages from '../../managers/image.manager';
-import logger from '../../managers/logger.manager';
-import * as Models from '../../managers/models.manager';
-import productManager from '../../managers/product.manager';
-import HttpError from '../../utils/HttpError';
 
-interface Image {
-  url: string;
-  public_id: string;
-}
+import logger from '@managers/logger.manager';
+import * as Models from '@managers/models.manager';
+import productManager from '@managers/product.manager';
+import getImagesURL from '@utils/getImagesURL';
+import HttpError from '@utils/HttpError';
 
-const { uploadImage } = manageImages();
 const { createProduct } = productManager();
 
 async function createProductController(req: Request, res: Response, next: NextFunction) {
@@ -26,33 +20,17 @@ async function createProductController(req: Request, res: Response, next: NextFu
       return next(error);
     }
 
-    let imageUrls: Image[] = [];
-
-    for (const file of Object.values(req.files)) {
-      const images = Array.isArray(file) ? file : [file];
-
-      const imageUploadPromises = images.map(async (image) => {
-        const result = await uploadImage(image.tempFilePath, 'products');
-        await fs.unlink(image.tempFilePath);
-        return {
-          url: result.secure_url,
-          public_id: result.public_id,
-        };
-      });
-
-      const keyImageUrls = await Promise.all(imageUploadPromises);
-      imageUrls = imageUrls.concat(keyImageUrls);
-    }
+    const imageUrls = await getImagesURL({ files: req.files, path: 'products' });
 
     const productData: Partial<Models.Product> = {
-      brand: req.body.brand,
-      category: req.body.category,
-      countInStock: req.body.countInStock,
+      brand: req.body['brand'],
+      category: req.body['category'],
+      countInStock: req.body['countInStock'],
       creatorId: req.user.userId,
-      description: req.body.description,
+      description: req.body['description'],
       images: imageUrls,
-      name: req.body.name,
-      price: req.body.price,
+      name: req.body['name'],
+      price: req.body['price'],
     };
 
     const product = await createProduct(productData);

@@ -1,4 +1,4 @@
-import mongodbProductManager from '../databases/mongodb/managers/product';
+import mongodbProductManager from '@mongodb/managers/product';
 
 function productManager() {
   return { ...mongodbProductManager() };

@@ -1,4 +1,6 @@
-const Image = {
+import type { Reference, Schema } from 'swagger-jsdoc';
+
+const Image: Reference | Schema = {
   type: 'object',
   properties: {
     _id: { type: 'string', example: '6123456789012345678901' },

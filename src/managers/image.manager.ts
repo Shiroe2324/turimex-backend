@@ -1,7 +1,7 @@
-import cloudinaryImageManager from '../services/cloudinary/cloudinary.service';
+import cloudinaryImageManager from '@cloudinary/cloudinary.service';
 
-function manageImages() {
+function imageManager() {
   return { ...cloudinaryImageManager() };
 }
 
-export default manageImages;
+export default imageManager;

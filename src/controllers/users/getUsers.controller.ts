@@ -1,6 +1,7 @@
 import type { NextFunction, Request, Response } from 'express';
-import logger from '../../managers/logger.manager';
-import userManager from '../../managers/user.manager';
+
+import logger from '@managers/logger.manager';
+import userManager from '@managers/user.manager';
 
 const { countUsers, getPagenizedUsers } = userManager();
 

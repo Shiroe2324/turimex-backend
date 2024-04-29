@@ -1,4 +1,6 @@
-const User = {
+import type { Reference, Schema } from 'swagger-jsdoc';
+
+const User: Reference | Schema = {
   type: 'object',
   properties: {
     _id: { type: 'string', example: '6123456789012345678901' },

@@ -1,6 +1,7 @@
 import { createClient } from 'redis';
-import logger from '../../managers/logger.manager';
-import config from '../../utils/config';
+
+import logger from '@managers/logger.manager';
+import config from '@utils/config';
 
 const MAX_RETRIES = 5;
 const { redis } = config;

@@ -1,4 +1,6 @@
-const ValidationErrorItem = {
+import type { Reference, Schema } from 'swagger-jsdoc';
+
+const ValidationErrorItem: Reference | Schema = {
   type: 'object',
   properties: {
     type: { type: 'string', example: 'field' },

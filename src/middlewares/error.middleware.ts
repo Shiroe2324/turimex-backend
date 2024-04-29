@@ -1,5 +1,6 @@
 import type { NextFunction, Request, Response } from 'express';
-import HttpError from '../utils/HttpError';
+
+import HttpError from '@utils/HttpError';
 
 async function errorMiddleware(error: unknown, _req: Request, res: Response, _next: NextFunction) {
   if (error instanceof HttpError) {

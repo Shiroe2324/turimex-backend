@@ -1,5 +1,5 @@
-import connectMongoDB from '../databases/mongodb/connection';
-import connectRedisDB from '../databases/redis/connection';
+import connectMongoDB from '@mongodb/connection';
+import connectRedisDB from '@redis/connection';
 
 async function connectDatabases() {
   await connectMongoDB();

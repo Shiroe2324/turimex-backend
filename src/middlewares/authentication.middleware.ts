@@ -1,15 +1,11 @@
 import type { NextFunction, Request, Response } from 'express';
-import JWT from 'jsonwebtoken';
-import userManager from '../managers/user.manager';
-import config from '../utils/config';
-import HttpError from '../utils/HttpError';
-import errorMiddleware from './error.middleware';
 
-interface UserPayload {
-  user: string;
-}
+import tokenManager from '@managers/token.manager';
+import userManager from '@managers/user.manager';
+import errorMiddleware from '@middlewares/error.middleware';
+import HttpError from '@utils/HttpError';
 
-const { jwtSecrets } = config;
+const { verifyToken } = tokenManager();
 const { getUserWithoutPassword } = userManager();
 
 async function authenticationMiddleware(req: Request, res: Response, next: NextFunction) {
@@ -17,17 +13,16 @@ async function authenticationMiddleware(req: Request, res: Response, next: NextF
 
   if (!token) {
     const error = new HttpError(401, 'Unauthorized - No token provided');
-    return errorMiddleware(error, req, res);
+    return errorMiddleware(error, req, res, next);
   }
 
   try {
-    const decoded = JWT.verify(token, jwtSecrets.login) as UserPayload;
-
-    const user = await getUserWithoutPassword(decoded.user);
+    const userIdDecoded = verifyToken(token, 'login');
+    const user = await getUserWithoutPassword(userIdDecoded);
 
     if (!user) {
       const error = new HttpError(401, 'Unauthorized - Invalid token');
-      return errorMiddleware(error, req, res);
+      return errorMiddleware(error, req, res, next);
     }
 
     req.user = user;
@@ -35,7 +30,7 @@ async function authenticationMiddleware(req: Request, res: Response, next: NextF
     next();
   } catch (error) {
     const err = new HttpError(401, 'Unauthorized - Invalid token');
-    return errorMiddleware(err, req, res);
+    return errorMiddleware(err, req, res, next);
   }
 }
 

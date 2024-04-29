@@ -1,7 +1,8 @@
 import type { NextFunction, Request, Response } from 'express';
-import logger from '../../managers/logger.manager';
-import userManager from '../../managers/user.manager';
-import HttpError from '../../utils/HttpError';
+
+import logger from '@managers/logger.manager';
+import userManager from '@managers/user.manager';
+import HttpError from '@utils/HttpError';
 
 const { getUserWithoutPassword } = userManager();
 

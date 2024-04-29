@@ -1,18 +1,20 @@
 import type { NextFunction, Request, Response } from 'express';
-import logger from '../../managers/logger.manager';
-import productManager from '../../managers/product.manager';
-import HttpError from '../../utils/HttpError';
+
+import logger from '@managers/logger.manager';
+import productManager from '@managers/product.manager';
+import HttpError from '@utils/HttpError';
 
 const { getProductBySlug } = productManager();
 
-async function ratingProductController(req: Request, res: Response, next: NextFunction) {
+async function updateProductRatingController(req: Request, res: Response, next: NextFunction) {
   try {
     if (!req.user) {
       const error = new HttpError(401, 'Unauthorized - No token provided');
       return next(error);
     }
 
-    const product = await getProductBySlug(req.params['slug']);
+    const slug = req.params['slug'];
+    const product = await getProductBySlug(slug);
 
     if (!product) {
       const error = new HttpError(404, 'Product not found');
@@ -24,7 +26,7 @@ async function ratingProductController(req: Request, res: Response, next: NextFu
       return next(error);
     }
 
-    const rating = parseInt(req.body.rating);
+    const rating = parseInt(req.body['rating']);
 
     if (isNaN(rating)) {
       const error = new HttpError(400, 'Invalid data - Rating must be a number');
@@ -48,7 +50,7 @@ async function ratingProductController(req: Request, res: Response, next: NextFu
       product.rating.users.splice(existingRatingIndex, 1);
     }
 
-    const comment = req.body.comment || null;
+    const comment = req.body['comment'] || null;
     product.rating.users.push({ userId: req.user.userId, rating, comment });
 
     const newTotal = ++product.rating.total;
@@ -71,4 +73,4 @@ async function ratingProductController(req: Request, res: Response, next: NextFu
   }
 }
 
-export default ratingProductController;
+export default updateProductRatingController;

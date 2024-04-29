@@ -1,5 +1,6 @@
 import cors from 'cors';
-import config from '../utils/config';
+
+import config from '@utils/config';
 
 const corsOptions = {
   origin: [

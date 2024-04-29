@@ -1,8 +1,8 @@
-import 'dotenv/config';
-import app from './app';
-import connectDatabases from './managers/connection.manager';
-import logger from './managers/logger.manager';
-import config from './utils/config';
+import app from 'app';
+
+import connectDatabases from '@managers/connection.manager';
+import logger from '@managers/logger.manager';
+import config from '@utils/config';
 
 connectDatabases();
 

@@ -1,64 +1,50 @@
-import logger from '../managers/logger.manager';
+import logger from '@managers/logger.manager';
+import { version } from '@package';
 
-const port = Number(process.env['PORT']) || 3000;
-const missingEnvVariables: string[] = [];
-const requiredEnvVariables = [
-  'CLOUDINARY_API_KEY',
-  'CLOUDINARY_API_SECRET',
-  'CLOUDINARY_CLOUD_NAME',
-  'EMAIL_HOST',
-  'EMAIL_PASS',
-  'EMAIL_SENDER',
-  'EMAIL_USER',
-  'EMAIL_VERIFICATION_URL',
-  'JWT_SECRET_LOGIN',
-  'JWT_SECRET_VALIDATION',
-  'MONGODB_URI',
-  'REDIS_HOST',
-  'REDIS_PASSWORD',
-  'REDIS_PORT',
-];
+function getEnv(env: string): string | undefined {
+  return Bun.env[env];
+}
 
-for (const variable of requiredEnvVariables) {
-  if (!process.env[variable]) {
-    missingEnvVariables.push(variable);
+function getEnvRequired(env: string): string {
+  const value = getEnv(env);
+  if (!value) {
+    logger.error(`Missing required environment variable: ${env}`);
+    process.exit(1);
   }
+  return value;
 }
 
-if (missingEnvVariables.length > 0) {
-  logger.error(`Missing environment variables: ${missingEnvVariables.join(', ')}`);
-  process.exit(1);
-}
+const port = Number(getEnv('PORT')) || 3000;
 
 const config = {
   cloudinary: {
-    apiKey: process.env['CLOUDINARY_API_KEY']!,
-    apiSecret: process.env['CLOUDINARY_API_SECRET']!,
-    cloudName: process.env['CLOUDINARY_CLOUD_NAME']!,
+    apiKey: getEnvRequired('CLOUDINARY_API_KEY'),
+    apiSecret: getEnvRequired('CLOUDINARY_API_SECRET'),
+    cloudName: getEnvRequired('CLOUDINARY_CLOUD_NAME'),
   },
   email: {
-    host: process.env['EMAIL_HOST']!,
-    pass: process.env['EMAIL_PASS']!,
-    port: Number(process.env['EMAIL_PORT']) || 465,
-    sender: process.env['EMAIL_SENDER']!,
-    user: process.env['EMAIL_USER']!,
-    verificationUrl: process.env['EMAIL_VERIFICATION_URL']!,
+    host: getEnvRequired('EMAIL_HOST'),
+    pass: getEnvRequired('EMAIL_PASS'),
+    port: Number(getEnv('EMAIL_PORT')) || 465,
+    sender: getEnvRequired('EMAIL_SENDER'),
+    user: getEnvRequired('EMAIL_USER'),
+    verificationUrl: getEnvRequired('EMAIL_VERIFICATION_URL'),
   },
   jwtSecrets: {
-    login: process.env['JWT_SECRET_LOGIN']!,
-    validation: process.env['JWT_SECRET_VALIDATION']!,
+    login: getEnvRequired('JWT_SECRET_LOGIN'),
+    validation: getEnvRequired('JWT_SECRET_VALIDATION'),
   },
-  mongodbUri: process.env['MONGODB_URI']!,
-  nodeEnv: process.env['NODE_ENV'] || 'development',
+  mongodbUri: getEnvRequired('MONGODB_URI'),
+  nodeEnv: getEnv('NODE_ENV') || 'development',
   port,
-  productionBackendServer: process.env['PRODUCTION_BACKEND_SERVER'] || `http://localhost:${port}`,
-  productionFrontendServer: process.env['PRODUCTION_FRONTEND_SERVER'] || 'http://localhost:4000',
+  productionBackendServer: getEnv('PRODUCTION_BACKEND_SERVER') || `http://localhost:${port}`,
+  productionFrontendServer: getEnv('PRODUCTION_FRONTEND_SERVER') || 'http://localhost:4000',
   redis: {
-    host: process.env['REDIS_HOST']!,
-    password: process.env['REDIS_PASSWORD']!,
-    port: Number(process.env['REDIS_PORT']!),
+    host: getEnvRequired('REDIS_HOST'),
+    password: getEnvRequired('REDIS_PASSWORD'),
+    port: Number(getEnvRequired('REDIS_PORT')),
   },
-  version: '1.0.0',
+  version,
 };
 
 export default config;

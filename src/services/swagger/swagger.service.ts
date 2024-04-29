@@ -1,16 +1,19 @@
+import type { Information, OAS3Options, Server, Tag } from 'swagger-jsdoc';
 import swaggerJSDoc from 'swagger-jsdoc';
-import config from '../../utils/config';
-import swaggerModels from './swaggerModels';
+
+import schemas from '@swagger/schemas';
+import securitySchemes from '@swagger/securitySchemes';
+import config from '@utils/config';
 
 const { productionFrontendServer, port, version } = config;
 
-const info: swaggerJSDoc.Information = {
+const info: Information = {
   title: 'Turimex API',
   description: 'All the information about the **API** backend for the `Turimex` program',
   version: `v${version}`,
 };
 
-const servers: swaggerJSDoc.Server[] = [
+const servers: Server[] = [
   {
     url: `http://localhost:${port}`,
     description: 'Development server',
@@ -21,7 +24,7 @@ const servers: swaggerJSDoc.Server[] = [
   },
 ];
 
-const tags: swaggerJSDoc.Tag[] = [
+const tags: Tag[] = [
   {
     name: 'Authentication',
     description: 'Routes for user authentication',
@@ -36,23 +39,14 @@ const tags: swaggerJSDoc.Tag[] = [
   },
 ];
 
-const securitySchemes = {
-  bearerAuth: {
-    type: 'http',
-    bearerFormat: 'JWT',
-    scheme: 'bearer',
-    description: 'JSON Web Token (`JWT`) authentication token',
-  },
-};
-
-const options: swaggerJSDoc.OAS3Options = {
+const options: OAS3Options = {
   definition: {
     openapi: '3.0.1',
     info,
     servers,
     tags,
     components: {
-      schemas: swaggerModels,
+      schemas,
       securitySchemes,
     },
   },

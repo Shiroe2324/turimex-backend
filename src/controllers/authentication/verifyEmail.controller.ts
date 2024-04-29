@@ -1,15 +1,11 @@
 import type { NextFunction, Request, Response } from 'express';
-import JWT from 'jsonwebtoken';
-import logger from '../../managers/logger.manager';
-import userManager from '../../managers/user.manager';
-import config from '../../utils/config';
-import HttpError from '../../utils/HttpError';
 
-interface VerificationPayload {
-  user: string;
-}
+import logger from '@managers/logger.manager';
+import tokenManager from '@managers/token.manager';
+import userManager from '@managers/user.manager';
+import HttpError from '@utils/HttpError';
 
-const { jwtSecrets } = config;
+const { verifyToken } = tokenManager();
 const { cleanUser, getUserById, updateUserById } = userManager();
 
 async function verifyEmailController(req: Request, res: Response, next: NextFunction) {
@@ -21,8 +17,8 @@ async function verifyEmailController(req: Request, res: Response, next: NextFunc
       return next(error);
     }
 
-    const decoded = JWT.verify(token as string, jwtSecrets.validation) as VerificationPayload;
-    const user = await getUserById(decoded.user);
+    const userIdDecoded = verifyToken(token, 'validation');
+    const user = await getUserById(userIdDecoded);
 
     if (!user) {
       const error = new HttpError(404, 'User not found');

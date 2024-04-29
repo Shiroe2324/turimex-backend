@@ -1,6 +1,7 @@
 import type { Request } from 'express';
-import type { Product } from '../interfaces/product.interface';
-import ProductModel from '../models/product.model';
+
+import type { Product } from '@mongodb/interfaces/product.interface';
+import ProductModel from '@mongodb/models/product.model';
 
 interface ProductFilters {
   brand?: string;

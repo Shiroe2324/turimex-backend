@@ -1,5 +1,6 @@
 import { Repository, Schema } from 'redis-om';
-import { getRedisClient } from '../connection';
+
+import { getRedisClient } from '@redis/connection';
 
 const userSchema = new Schema(
   'user',

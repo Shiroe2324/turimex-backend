@@ -1,8 +1,9 @@
 import type { Request } from 'express';
 import { EntityId } from 'redis-om';
-import { getRedisClient } from '../connection';
-import type { User } from '../interfaces/user.interface';
-import getUserRepository from '../repositories/user.repository';
+
+import { getRedisClient } from '@redis/connection';
+import type { User } from '@redis/interfaces/user.interface';
+import getUserRepository from '@redis/repositories/user.repository';
 
 const search = () => getUserRepository().search();
 const searchById = (userId: string) => search().where('userId').is.equalTo(userId);

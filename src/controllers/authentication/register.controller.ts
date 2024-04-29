@@ -1,26 +1,29 @@
-import bcrypt from 'bcrypt';
 import type { NextFunction, Request, Response } from 'express';
-import JWT from 'jsonwebtoken';
-import logger from '../../managers/logger.manager';
-import userManager from '../../managers/user.manager';
-import config from '../../utils/config';
-import sendVerificationEmail, { isSmtpHostDown } from '../../utils/email';
-import HttpError from '../../utils/HttpError';
 
-const { jwtSecrets } = config;
+import emailManager from '@managers/email.manager';
+import logger from '@managers/logger.manager';
+import passwordManager from '@managers/password.manager';
+import tokenManager from '@managers/token.manager';
+import userManager from '@managers/user.manager';
+import HttpError from '@utils/HttpError';
+
+const { isSmtpHostDown, sendVerificationEmail } = emailManager();
+const { hashPassword } = passwordManager();
+const { createToken } = tokenManager();
 const { cleanUser, createUser, deleteUserByEmail, getUserByEmail } = userManager();
 
 async function registerController(req: Request, res: Response, next: NextFunction) {
   try {
-    if (isSmtpHostDown()) {
+    const isSmtpDown = await isSmtpHostDown();
+
+    if (isSmtpDown) {
       const error = new HttpError(500, 'Server Error - Email service is down');
       return next(error);
     }
 
-    const email = (req.body.email as string).trim();
-    const password = (req.body.password as string).trim();
-    const username = (req.body.username as string).trim();
-
+    const email = (req.body['email'] as string).trim();
+    const password = (req.body['password'] as string).trim();
+    const username = (req.body['username'] as string).trim();
     const existingUser = await getUserByEmail(email);
 
     if (existingUser) {
@@ -28,7 +31,7 @@ async function registerController(req: Request, res: Response, next: NextFunctio
       return next(error);
     }
 
-    const hashedPassword = await bcrypt.hash(password, 10);
+    const hashedPassword = await hashPassword(password);
 
     const newUser = await createUser({
       avatar: null,
@@ -39,10 +42,7 @@ async function registerController(req: Request, res: Response, next: NextFunctio
       username,
     });
 
-    const token = JWT.sign({ user: newUser.userId }, jwtSecrets.validation, {
-      expiresIn: '4h',
-    });
-
+    const token = createToken(newUser, 'validation');
     const mail = await sendVerificationEmail(email, username, token);
 
     if (!mail.accepted.length) {

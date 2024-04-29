@@ -1,18 +1,19 @@
 import { Router } from 'express';
-import loginController from '../controllers/authentication/login.controller';
-import registerController from '../controllers/authentication/register.controller';
-import verifyEmailController from '../controllers/authentication/verifyEmail.controller';
-import { strictLimiterMiddleware } from '../middlewares/limiter.middleware';
-import validateFieldsMiddleware from '../middlewares/validateFields.middleware';
-import loginValidator from '../validators/authentication/login.validator';
-import registerValidator from '../validators/authentication/register.validator';
-import verifyEmailValidator from '../validators/authentication/verifyEmail.validator';
+
+import loginController from '@controllers/login.controller';
+import registerController from '@controllers/register.controller';
+import verifyEmailController from '@controllers/verifyEmail.controller';
+import rateLimitMiddleware from '@middlewares/rateLimit.middleware';
+import validateFieldsMiddleware from '@middlewares/validateFields.middleware';
+import loginValidator from '@validators/login.validator';
+import registerValidator from '@validators/register.validator';
+import verifyEmailValidator from '@validators/verifyEmail.validator';
 
 const router = Router();
 
 router.post(
   '/login',
-  strictLimiterMiddleware,
+  rateLimitMiddleware(1, 5),
   loginValidator,
   validateFieldsMiddleware,
   loginController,
@@ -20,7 +21,7 @@ router.post(
 
 router.post(
   '/register',
-  strictLimiterMiddleware,
+  rateLimitMiddleware(1, 5),
   registerValidator,
   validateFieldsMiddleware,
   registerController,
@@ -28,7 +29,7 @@ router.post(
 
 router.patch(
   '/verify-email',
-  strictLimiterMiddleware,
+  rateLimitMiddleware(1, 1),
   verifyEmailValidator,
   validateFieldsMiddleware,
   verifyEmailController,

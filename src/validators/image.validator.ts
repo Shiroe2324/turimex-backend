@@ -11,7 +11,7 @@ function verifyImageFile(file: UploadedFile) {
   }
 }
 
-const validateImageFile: CustomValidator = (_, { req }) => {
+const validateImageFile: CustomValidator = (_input, { req }) => {
   if (!req['files'] || Object.keys(req['files']).length === 0) {
     throw new Error('No files have been selected.');
   }

@@ -1,6 +1,7 @@
 import type { NextFunction, Request, Response } from 'express';
-import logger from '../../managers/logger.manager';
-import productManager from '../../managers/product.manager';
+
+import logger from '@managers/logger.manager';
+import productManager from '@managers/product.manager';
 
 const { countProducts, getPagenizedProducts } = productManager();
 

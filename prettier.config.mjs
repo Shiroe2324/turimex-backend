@@ -1,6 +1,7 @@
 export default {
   bracketSpacing: true,
-  importOrder: ['^components/(.*)$', '^[./]'],
+  importOrder: ['<THIRD_PARTY_MODULES>', '^@.+$', '^@.+/.*$', '^[./]'],
+  importOrderSeparation: true,
   importOrderCaseInsensitive: true,
   importOrderSortSpecifiers: true,
   jsxSingleQuote: true,

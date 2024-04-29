@@ -1,4 +1,6 @@
-const HttpError = {
+import type { Reference, Schema } from 'swagger-jsdoc';
+
+const HttpError: Reference | Schema = {
   type: 'object',
   properties: {
     status: { type: 'string', example: 'error' },

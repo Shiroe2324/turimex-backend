@@ -1,9 +1,11 @@
-import bcrypt from 'bcrypt';
 import type { NextFunction, Request, Response } from 'express';
-import logger from '../../managers/logger.manager';
-import userManager from '../../managers/user.manager';
-import HttpError from '../../utils/HttpError';
 
+import logger from '@managers/logger.manager';
+import passwordManager from '@managers/password.manager';
+import userManager from '@managers/user.manager';
+import HttpError from '@utils/HttpError';
+
+const { hashPassword } = passwordManager();
 const { cleanUser, getUserById, updateUserById } = userManager();
 
 async function updateUserController(req: Request, res: Response, next: NextFunction) {
@@ -14,6 +16,8 @@ async function updateUserController(req: Request, res: Response, next: NextFunct
     }
 
     const { userId } = req.params;
+    const bodyPassword = req.body['password'] as string;
+    const bodyUsername = req.body['username'] as string;
     const user = await getUserById(userId);
 
     if (!user) {
@@ -26,7 +30,7 @@ async function updateUserController(req: Request, res: Response, next: NextFunct
       return next(error);
     }
 
-    if (!req.body.password && !req.body.username) {
+    if (!bodyPassword && !bodyUsername) {
       const error = new HttpError(400, 'Invalid data - Password or username is required');
       return next(error);
     }
@@ -34,12 +38,12 @@ async function updateUserController(req: Request, res: Response, next: NextFunct
     let password = user.password;
     let username = user.username;
 
-    if (req.body.password) {
-      password = await bcrypt.hash(req.body.password.trim(), 10);
+    if (bodyPassword) {
+      password = await hashPassword(bodyPassword.trim());
     }
 
-    if (req.body.username) {
-      username = req.body.username.trim();
+    if (bodyUsername) {
+      username = bodyUsername.trim();
     }
 
     const userToUpdate = { username, password };

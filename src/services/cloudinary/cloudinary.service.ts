@@ -1,5 +1,6 @@
 import { v2 as cloudinary } from 'cloudinary';
-import config from '../../utils/config';
+
+import config from '@utils/config';
 
 const { cloudinary: cloudinaryConfig } = config;
 

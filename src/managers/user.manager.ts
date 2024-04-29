@@ -1,4 +1,4 @@
-import redisUserManager from '../databases/redis/managers/user';
+import redisUserManager from '@redis/managers/user';
 
 function userManager() {
   return { ...redisUserManager() };

@@ -1,5 +1,6 @@
 import { body, check } from 'express-validator';
-import validateImageFile from '../image.validator';
+
+import validateImageFile from '@custom-image-validator';
 
 const createProductValidator = [
   body('name')

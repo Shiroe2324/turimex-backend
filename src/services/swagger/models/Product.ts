@@ -1,4 +1,6 @@
-const Product = {
+import type { Reference, Schema } from 'swagger-jsdoc';
+
+const Product: Reference | Schema = {
   type: 'object',
   properties: {
     _id: { type: 'string', example: '6123456789012345678901' },
